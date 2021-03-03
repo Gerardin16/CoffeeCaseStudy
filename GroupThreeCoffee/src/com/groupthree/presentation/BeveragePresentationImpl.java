@@ -17,7 +17,8 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     String voucherCode;
     @Override
     public void showBeveragesMenu() {
-        BillTransactionService transactionService=new BillTransactionService();
+        BillTransactionServiceInterface transactionService=new BillTransactionService();
+        BeverageHelper bvhelper=new BeverageHelper();
         try{
             System.out.println("Welcome to Group Three Coffee, Please place your order");
             showCoffeeType();
@@ -42,7 +43,8 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     }
 
     public void printBill() {
-        BeverageHelper.displayBill();
+        transactionService.generrateBill();
+        bvhelper.displayBill();
     }
 
     public void showVoucher() {
@@ -70,7 +72,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         CoffeeAddonService coffeeAddon=new CoffeeAddonService();
         ArrayList<CoffeeAddon> coffeeAddonList=coffeeAddon.getCoffeeAddon();
         for(CoffeeAddon addOn:coffeeAddonList){
-            BeverageHelper.displayCoffeeAddon(coffeeAddon);
+            bvhelper.displayCoffeeAddon(coffeeAddon);
         }
         choice = input.nextInt();
         transactionService.createUpdateOrder(choice);
@@ -88,7 +90,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         System.out.println("Choose your size");
         ArrayList<CoffeeSize> coffeeSizeList=coffeeSize.getCoffeeSize();
         for(CoffeeSize size:coffeeSizeList){
-            BeverageHelper.displayCoffeeSize(coffeeSize);
+            bvhelper.displayCoffeeSize(coffeeSize);
         }
         choice = input.nextInt();
         transactionService.createUpdateOrder(choice);
@@ -100,7 +102,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
        System.out.println("Choose your coffee");
        ArrayList<CoffeeType> coffeeTypeList=coffeeType.getCoffeeType();
        for(CoffeeType type:coffeeTypeList){
-           BeverageHelper.displayCoffeeType();
+           bvhelper.displayCoffeeType();
        }
        choice = input.nextInt();
        transactionService.createUpdateOrder(choice);

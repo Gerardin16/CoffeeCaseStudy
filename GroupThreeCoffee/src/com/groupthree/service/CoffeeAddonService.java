@@ -1,4 +1,14 @@
 package com.groupthree.service;
 
-public class CoffeeAddonService {
+import java.sql.SQLException;
+
+public class CoffeeAddonService implements CoffeeAddonServiceInterface {
+
+    private CoffeeAddonDaoInterface coffeeAddonDao = CoffeeAddonDao();
+
+    @Override
+    public ArrayList<CoffeeAddon> getCoffeeAddon() throws ClassNotFoundException, SQLException {
+        return coffeeAddonDao.getCoffeeAddon();
+
+    }
 }
