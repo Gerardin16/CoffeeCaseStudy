@@ -17,6 +17,8 @@ public class CoffeeType {
 		this.coffeeNamePrice = coffeeNamePrice;
 	}
 
+
+
 	public int getCoffeeId() {
 		return coffeeId;
 	}

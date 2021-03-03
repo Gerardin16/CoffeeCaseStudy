@@ -2,10 +2,11 @@ package com.groupthree.dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.groupthree.bean.Beverage;
+import com.groupthree.bean.CoffeeVoucher;
 
 public interface CoffeeVoucherDaoInterface {
 
-	ArrayList<Beverage> getAllRecords() throws ClassNotFoundException, SQLException;
-	Beverage searchRecordById(int id);
+
+
+    ArrayList<CoffeeVoucher> getCoffeeVoucher();
 }

@@ -8,10 +8,10 @@ import com.groupthree.bean.CoffeeType;
 public class BeverageHelper {
 
 	public static void displayCoffeeType(CoffeeType ct){
-		System.out.println(ct.getCoffeeId()+" "+ct.getCoffeeName()+" "+ct.getCoffeeNamePrice());
+		System.out.println(ct.getCoffeeName());
 	}
 	public static void displayCoffeeSize(CoffeeSize cs) {
-		System.out.println(cs.getCoffeeSizeId()+" "+cs.getCoffeeSizeName()+" "+cs.getCoffeeSizePrice());
+		System.out.println(cs.getCoffeeSizeName());
 	}
 	public static void displayCoffeeAddOn(CoffeeAddon ca) {
 		System.out.println(ca.getCoffeeAddonId()+" "+ca.getCoffeeAddonName()+" "+ca.getCoffeeAddonPrice());
@@ -19,4 +19,6 @@ public class BeverageHelper {
 	public static void displayCoffeeBill(CoffeeBill cb) {
 	System.out.println(cb.getBillId()+" "+cb.getOrderNumber()+" "+cb.getVoucherId()+" "+cb.getTotalNo());
 }
+
+
 }

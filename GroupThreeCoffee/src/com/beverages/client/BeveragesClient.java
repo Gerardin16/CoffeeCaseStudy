@@ -13,9 +13,9 @@ public class BeveragesClient {
         BeveragePresentationInterface beveragePresentation = new BeveragePresentationImpl();
 
 
-//            while (true) {
+            while (true) {
                 beveragePresentation.showBeveragesMenu();
-//            }
+            }
 
     }
 }
