@@ -2,10 +2,15 @@ package com.groupthree.bean;
 
 public class CoffeeOrder {
 		private int orderId;
-		private int orderNumber;
+		private String orderNumber;
 	private int coffeeId;
 	private int coffeeSizeId;
 	private int coffeeAddonId;
+
+	public CoffeeOrder() {
+
+	}
+
 
 	public int getOrderId() {
 		return orderId;
@@ -15,11 +20,11 @@ public class CoffeeOrder {
 		this.orderId = orderId;
 	}
 
-	public int getOrderNumber() {
+	public String getOrderNumber() {
 		return orderNumber;
 	}
 
-	public void setOrderNumber(int orderNumber) {
+	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
 	}
 
@@ -47,7 +52,7 @@ public class CoffeeOrder {
 		this.coffeeAddonId = coffeeAddonId;
 	}
 
-	public CoffeeOrder(int orderId, int orderNumber, int coffeeId, int coffeeSizeId, int coffeeAddonId) {
+	public CoffeeOrder(int orderId, String orderNumber, int coffeeId, int coffeeSizeId, int coffeeAddonId) {
 		this.orderId = orderId;
 		this.orderNumber = orderNumber;
 		this.coffeeId = coffeeId;

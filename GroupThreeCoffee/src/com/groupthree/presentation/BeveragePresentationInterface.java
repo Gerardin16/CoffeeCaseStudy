@@ -6,6 +6,6 @@ public interface BeveragePresentationInterface {
     public void showCoffeeSize() throws SQLException, ClassNotFoundException;
     public void showCoffeeAddon() throws SQLException, ClassNotFoundException;
     public void showVoucher() throws SQLException, ClassNotFoundException;
-    public void printBill() throws SQLException, ClassNotFoundException;
+    public void printBill(String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException;
     String ORDER_NUMBER="ORDR";
 }
