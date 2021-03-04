@@ -12,7 +12,7 @@ public interface BillTransactionServiceInterface {
     double SERVICE_TAX=0.18;
 
 
-    public TreeMap<String,Double> generateBill(String initialOrderNum, int selectedVoucher)throws ClassNotFoundException,SQLException;
+    public ArrayList generateBill(String initialOrderNum, int selectedVoucher)throws ClassNotFoundException,SQLException;
 
     public int createRandomOrderNumber();
 

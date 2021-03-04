@@ -96,7 +96,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     }
 
     public void printBill(String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
-       TreeMap<String,Double> bill =transactionService.generateBill(initialOrderNum,selectedVoucher);
+       ArrayList bill =transactionService.generateBill(initialOrderNum,selectedVoucher);
         BeverageHelper.displayCoffeeBill(bill);
 
     }
@@ -115,11 +115,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 if (voucherCode.equalsIgnoreCase(voucher.getVoucherCode().toString())) {
 //                    transactionService.createCoffeeOrder();
                 	selectedVoucher=voucher.getVoucherId();
-                	System.out.println("Order placed");
-                }
-            else
-                {
-                    System.out.println("The voucher code is not available");
+//                	System.out.println("Order placed");
                 }
             System.out.println("=========================");
         }

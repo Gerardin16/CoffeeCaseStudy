@@ -5,6 +5,7 @@ import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeSize;
 import com.groupthree.bean.CoffeeType;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -20,14 +21,22 @@ public class BeverageHelper {
 		System.out.println(ca.getCoffeeAddonName()+" - "+ca.getCoffeeAddonPrice());
 	}
 
-	public static void displayCoffeeBill(TreeMap<String, Double> bill) {
+	public static void displayCoffeeBill(ArrayList bill) {
 
 		System.out.println("==========================");
 		System.out.println("Final Invoice");
-		Set<String> keys = bill.keySet();
-		for (String key : keys) {
-			System.out.println(key+"-"+bill.get(key));
-		}
+		System.out.print("Total Value:");
+		System.out.println(bill.get(0));
+		System.out.print("Discount:");
+		System.out.println(bill.get(1));
+		System.out.print("Net Value:");
+		System.out.println(bill.get(2));
+		System.out.print("GST:");
+		System.out.println(bill.get(3));
+		System.out.print("Service Tax:");
+		System.out.println(bill.get(4));
+		System.out.print("Total Bill:");
+		System.out.println(bill.get(5));
 	}
 }
 

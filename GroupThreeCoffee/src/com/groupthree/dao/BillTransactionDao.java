@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 public class BillTransactionDao implements BillTransactionDaoInterface {
 
-    @Override
+    private static final int NULL = 0;
+
+	@Override
     public void createOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
             throws ClassNotFoundException, SQLException {
         Connection connection = null;
@@ -44,12 +46,12 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 	public ArrayList getOrders(String initialOrderNum) throws SQLException, ClassNotFoundException {
 		Connection connection = null;
 		ArrayList<Integer> prices = new ArrayList<Integer>();
+		String queryString="Select SUM(distinct(COFFEE_NAME_PRICE)) AS coffee_types_sum,SUM(COFFEE_SIZE_PRICE) AS coffee_sizes_sum,SUM(COFFEE_ADDON_PRICE) AS coffee_addons_sum  from COFFEE_ORDER co inner join COFFEE_TYPE ct\r\n"
+				+ "on co.COFFEE_ID=ct.COFFEE_ID inner join COFFEE_SIZE cs on co.COFFEE_SIZE_ID=cs.COFFEE_SIZE_ID\r\n"
+				+ "inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where ORDER_NUMBER LIKE '"+initialOrderNum+"%'";
 
 		connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-		PreparedStatement statement = connection.prepareStatement("Select SUM(distinct(COFFEE_NAME_PRICE)) AS coffee_types_sum,SUM(COFFEE_SIZE_PRICE) " +
-				"AS coffee_sizes_sum,SUM(COFFEE_ADDON_PRICE) AS coffee_addons_sum  from COFFEE_ORDER co inner join COFFEE_TYPE ct\n" +
-				"on co.COFFEE_ID=ct.COFFEE_ID inner join COFFEE_SIZE cs on co.COFFEE_SIZE_ID=cs.COFFEE_SIZE_ID\n" +
-				"inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where ORDER_NUMBER LIKE" +initialOrderNum +";");
+		PreparedStatement statement = connection.prepareStatement(queryString);
 
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
@@ -82,13 +84,17 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		Statement insertStatement=connection.createStatement();
 		coffeeBill.setBillId(rowCount);
 		coffeeBill.setOrderNumber(initialOrderNum);
+		if (selectedVoucher==0)	
+		coffeeBill.setVoucherId(NULL);
+		else
 		coffeeBill.setVoucherId(selectedVoucher);
+			
 		coffeeBill.setTotalAmt(totalBill);
 		String query="Insert into BILL_ORDER values("+coffeeBill.getBillId()+
 				",'"+coffeeBill.getOrderNumber()+"','"+coffeeBill.getVoucherId()+"','"+coffeeBill.getTotalAmt()+
 				"')";
 
-
+		int rows=insertStatement.executeUpdate(query);
 		connection.close();
 	}
 

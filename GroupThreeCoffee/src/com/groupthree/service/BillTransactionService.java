@@ -17,23 +17,24 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
     BillTransactionDaoInterface billTrans=new BillTransactionDao();
 	CoffeeVoucherDaoInterface coffeeVoucher=new CoffeeVoucherDao();
+	private Integer totalValue;
 
 
     @Override
-    public TreeMap<String,Double> generateBill(String initialOrderNum, int selectedVoucher)
+    public ArrayList  generateBill(String initialOrderNum, int selectedVoucher)
 			throws ClassNotFoundException, SQLException {
-    	Integer totalValue = null;
-    	Double discount=null;
-    	Double netValue;
-    	Double gstTax;
-    	Double stTax;
-    	Double totalBill;
-		Map<String,Double> displayBill=new TreeMap<String,Double>();
+    	int totalValue=0;
+    	double discount = 0;
+    	double netValue;
+    	double gstTax;
+    	double stTax;
+    	double totalBill;
+		ArrayList displayBill=new ArrayList();
 
     	ArrayList<Integer> pricesList= billTrans.getOrders(initialOrderNum);
     	 for(Integer price:pricesList)
 		 {
-				totalValue+=price;
+				totalValue=totalValue+price;
 		 }
 		ArrayList<CoffeeVoucher> coffeeVoucherList=coffeeVoucher.getCoffeeVoucher();
 		for(CoffeeVoucher voucher:coffeeVoucherList)
@@ -52,15 +53,16 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		gstTax=netValue*GST_TAX;
 		stTax=netValue*SERVICE_TAX;
 		totalBill=netValue+gstTax+stTax;
-		billTrans.createBill(initialOrderNum,selectedVoucher,totalBill);
-		displayBill.put("Total Value", Double.valueOf(totalValue));
-		displayBill.put("Discount", discount);
-		displayBill.put("Net Value", netValue);
-		displayBill.put("GST", gstTax);
-		displayBill.put("Service Tax", stTax);
-		displayBill.put("Total Bill", totalBill);
+		totalBill=Math.round(totalBill);
+//		billTrans.createBill(initialOrderNum,selectedVoucher,totalBill);
+		displayBill.add( Double.valueOf(totalValue));
+		displayBill.add (discount);
+		displayBill.add( netValue);
+		displayBill.add( gstTax);
+		displayBill.add( stTax);
+		displayBill.add(totalBill);
 
-		return (TreeMap<String, Double>) displayBill;
+		return  displayBill;
 	}
 
 
