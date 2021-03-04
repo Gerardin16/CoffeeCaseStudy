@@ -14,7 +14,7 @@ public class BeverageHelper {
 		System.out.println(cs.getCoffeeSizeName());
 	}
 	public static void displayCoffeeAddOn(CoffeeAddon ca) {
-		System.out.println(ca.getCoffeeAddonId()+" "+ca.getCoffeeAddonName()+" "+ca.getCoffeeAddonPrice());
+		System.out.println(ca.getCoffeeAddonName());
 	}
 	public static void displayCoffeeBill(CoffeeBill cb) {
 	System.out.println(cb.getBillId()+" "+cb.getOrderNumber()+" "+cb.getVoucherId()+" "+cb.getTotalNo());

@@ -9,8 +9,11 @@ public interface BillTransactionServiceInterface {
 
     double GST_TAX=0.18;
     double SERVICE_TAX=0.18;
-    public void createUpdateOrder()throws ClassNotFoundException, SQLException;
+
+
     public ArrayList<CoffeeBill> generateBill()throws ClassNotFoundException,SQLException;
 
 
+
+    public void createCoffeeOrder();
 }

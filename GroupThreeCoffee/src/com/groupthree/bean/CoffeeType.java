@@ -19,6 +19,7 @@ public class CoffeeType {
 
 
 
+
 	public int getCoffeeId() {
 		return coffeeId;
 	}

@@ -34,5 +34,8 @@ public class CoffeeTypeDao implements CoffeeTypeDaoInterface {
         return coffeeTypes;
 
     }
+
+
+
 }
 

@@ -7,15 +7,19 @@ import java.util.ArrayList;
 
 public class BillTransactionService implements BillTransactionServiceInterface{
 
-    @Override
-    public void createUpdateOrder(String coffeeTypeChoice) throws ClassNotFoundException, SQLException {
+    public String OrderNumber;
 
-    }
 
 
     @Override
     public ArrayList<CoffeeBill> generateBill() throws ClassNotFoundException, SQLException {
         return null;
+    }
+  
+
+    @Override
+    public void createCoffeeOrder() {
+
     }
 
 
