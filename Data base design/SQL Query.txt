@@ -67,3 +67,36 @@ INSERT INTO COFFEE_ADDONS VALUES(303,'HAZELNUTS',60);
 INSERT INTO COFFEE_VOUCHER VALUES(401,'BZH30','30% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(402,'BZH10','10% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(403,'BZH20','20% OFFER');
+
+---- PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
+CREATE SEQUENCE pid_seq;
+
+CREATE TRIGGER pid
+BEFORE INSERT ON person
+FOR EACH ROW
+BEGIN
+  SELECT pid_seq.nextval
+  INTO :new.pid
+  FROM dual;
+END;
+
+CREATE TABLE PERSON 
+(pid number(5) primary key, 
+person_name varchar2(25) NOT NULL,
+person_phoneno number(10) NOT NULL,
+CONSTRAINT person_phoneno UNIQUE(person_phoneno));
+
+SELECT pid, person_name, person_phoneno
+FROM person
+ORDER BY pid;
+
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Swetha', 9000088888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Priya', 8880099999);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Rohan', 9941219888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Surya', 9876548888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Sujata', 9000080000);
