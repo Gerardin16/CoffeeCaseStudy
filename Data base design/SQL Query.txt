@@ -98,7 +98,11 @@ INSERT INTO COFFEE_VOUCHER VALUES(401,'BZH30','30% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(402,'BZH10','10% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(403,'BZH20','20% OFFER');
 
+<<<<<<< HEAD
 PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
+=======
+---- PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
+>>>>>>> c67e12ff9e8d32a21c4b6d914b832e2dc8f9a1be
 CREATE SEQUENCE pid_seq;
 
 CREATE TRIGGER pid
@@ -130,4 +134,7 @@ INSERT INTO person (person_name, person_phoneno)
 VALUES ('Surya', 9876548888);
 INSERT INTO person (person_name, person_phoneno)
 VALUES ('Sujata', 9000080000);
+<<<<<<< HEAD
 
+=======
+>>>>>>> c67e12ff9e8d32a21c4b6d914b832e2dc8f9a1be
