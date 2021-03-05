@@ -25,6 +25,9 @@ public class BeverageHelper {
 
 		System.out.println("==========================");
 		System.out.println("Final Invoice");
+//		for(int index=0;index< bill.size();index++){
+//			System.out.println(bill.get(index));
+//		}
 		System.out.print("Total Value:");
 		System.out.println(bill.get(0));
 		System.out.print("Discount:");

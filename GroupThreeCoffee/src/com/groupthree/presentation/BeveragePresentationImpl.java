@@ -77,6 +77,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
             printBill(initialOrderNum,selectedVoucher);
             System.out.println("Happy Drink! Have a good day.");
+            System.out.println("================================");
 
 
 

@@ -41,17 +41,19 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		{
 			if(selectedVoucher==voucher.getVoucherId())
 			{
-				if(voucher.getVoucherCode()=="BZH30")
+				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH30"))
 					discount=0.3*totalValue;
-				if(voucher.getVoucherCode()=="BZH20")
+				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
 					discount=0.2*totalValue;
-				if(voucher.getVoucherCode()=="BZH10")
+				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
 					discount=0.1*totalValue;
 			}
 		}
 		netValue=totalValue-discount;
 		gstTax=netValue*GST_TAX;
+		gstTax=Math.round(gstTax);
 		stTax=netValue*SERVICE_TAX;
+		stTax=Math.round(stTax);
 		totalBill=netValue+gstTax+stTax;
 		totalBill=Math.round(totalBill);
 //		billTrans.createBill(initialOrderNum,selectedVoucher,totalBill);
