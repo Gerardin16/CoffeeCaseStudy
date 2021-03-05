@@ -1,6 +1,7 @@
 package com.groupthree.service;
 
 import com.groupthree.bean.CoffeeBill;
+import java.util.UUID;
 import com.groupthree.bean.CoffeeVoucher;
 import com.groupthree.dao.BillTransactionDao;
 import com.groupthree.dao.BillTransactionDaoInterface;
@@ -71,8 +72,11 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
 
 	@Override
-	public int createRandomOrderNumber() {
-		return (int) Math.floor((Math.random()*100));
+	public String createRandomOrderNumber() {
+	
+		String rand=UUID.randomUUID().toString().replace("-", "");
+		rand=rand.substring(0,3);
+		return rand;
 	}
 
 

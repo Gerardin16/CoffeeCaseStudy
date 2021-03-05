@@ -20,8 +20,21 @@ COFFEE_ADDON_PRICE NUMBER(5,2),
 CONSTRAINT PK_Coffeeaddonid PRIMARY KEY(COFFEE_ADDON_ID)) ;
 
 --Coffee Order Table--
+
+CREATE SEQUENCE oid_seq;
+
+CREATE TRIGGER oid
+BEFORE INSERT ON COFFEE_ORDER
+FOR EACH ROW
+BEGIN
+  SELECT oid_seq.nextval
+  INTO :new.ORDER_ID
+  FROM dual;
+END;
+
 CREATE TABLE COFFEE_ORDER
-( ORDER_ID number(10) NOT NULL,  
+( ORDER_ID number(10) NOT NULL, 
+  P_ID number(5) NOT NULL,
   ORDER_NUMBER varchar2(50) NOT NULL,  
   COFFEE_ID number(10) NOT NULL, 
   COFFEE_SIZE_ID number(10) NOT NULL,
@@ -29,6 +42,8 @@ CREATE TABLE COFFEE_ORDER
   CONSTRAINT coffee_order_pk PRIMARY KEY(ORDER_ID),
   CONSTRAINT order_coffeetype_fk FOREIGN KEY(COFFEE_ID)
   REFERENCES COFFEE_TYPE(COFFEE_ID),
+  CONSTRAINT order_coffeeperson_fk FOREIGN KEY(P_ID)
+  REFERENCES PERSON(PID),
   CONSTRAINT order_coffeesize_fk FOREIGN KEY(COFFEE_SIZE_ID)
   REFERENCES COFFEE_SIZE(COFFEE_SIZE_ID),
   CONSTRAINT order_coffeeaddon_fk FOREIGN KEY(COFFEE_ADDON_ID)
@@ -37,14 +52,29 @@ CREATE TABLE COFFEE_ORDER
 );
 
 --Bill Order Table--
+
+CREATE SEQUENCE bid_seq;
+
+
+CREATE TRIGGER bid
+BEFORE INSERT ON BILL_ORDER
+FOR EACH ROW
+BEGIN
+  SELECT bid_seq.nextval
+  INTO :new.BILL_ID
+  FROM dual;
+END;
 CREATE TABLE BILL_ORDER
-(BILL_ID number(10) NOT NULL,  
+(BILL_ID number(10) NOT NULL, 
+ P_ID number(5) NOT NULL, 
  ORDER_NUMBER varchar2(50) NOT NULL,  
  VOUCHER_ID number(10),
   TOTAL_BILL_amt number(5,2),
   CONSTRAINT coffee_bill_pk PRIMARY KEY (BILL_ID) ,
   CONSTRAINT order_coffeeorder_fk FOREIGN KEY (ORDER_NUMBER)
   REFERENCES COFFEE_ORDER(ORDER_NUMBER),
+ CONSTRAINT order_coffeeperson_fk FOREIGN KEY(P_ID)
+  REFERENCES PERSON(PID),
   CONSTRAINT order_coffeevoucher_fk FOREIGN KEY (VOUCHER_ID)
   REFERENCES VOUCHER(VOUCHER_ID)
 );
@@ -67,3 +97,37 @@ INSERT INTO COFFEE_ADDONS VALUES(303,'HAZELNUTS',60);
 INSERT INTO COFFEE_VOUCHER VALUES(401,'BZH30','30% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(402,'BZH10','10% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(403,'BZH20','20% OFFER');
+
+PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
+CREATE SEQUENCE pid_seq;
+
+CREATE TRIGGER pid
+BEFORE INSERT ON person
+FOR EACH ROW
+BEGIN
+  SELECT pid_seq.nextval
+  INTO :new.pid
+  FROM dual;
+END;
+
+CREATE TABLE PERSON 
+(pid number(5) primary key, 
+person_name varchar2(25) NOT NULL,
+person_phoneno number(10) NOT NULL,
+CONSTRAINT person_phoneno UNIQUE(person_phoneno));
+
+SELECT pid, person_name, person_phoneno
+FROM person
+ORDER BY pid;
+
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Swetha', 9000088888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Priya', 8880099999);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Rohan', 9941219888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Surya', 9876548888);
+INSERT INTO person (person_name, person_phoneno)
+VALUES ('Sujata', 9000080000);
+

@@ -14,7 +14,7 @@ public interface BillTransactionServiceInterface {
 
     public ArrayList generateBill(String initialOrderNum, int selectedVoucher)throws ClassNotFoundException,SQLException;
 
-    public int createRandomOrderNumber();
+    public String createRandomOrderNumber();
 
     void createCoffeeOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon) throws SQLException, ClassNotFoundException;
 

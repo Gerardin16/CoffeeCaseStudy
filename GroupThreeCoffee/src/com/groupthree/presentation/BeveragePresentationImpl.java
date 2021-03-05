@@ -49,7 +49,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private String OrderNum;
     private String initialOrderNum=ORDER_NUMBER;
     private int count;
-    private int randomNum;
+    private String randomNum;
     Scanner input=new Scanner(System.in);
 
 
@@ -60,12 +60,19 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             System.out.println("Welcome to Group Three Coffee, Please place your order");
             count=0;
             randomNum=transactionService.createRandomOrderNumber();
-        	initialOrderNum=initialOrderNum+randomNum+"I";
+        	initialOrderNum=initialOrderNum+randomNum;
             do {
             	
                 showCoffeeType();
                 showCoffeeSize();
-                showCoffeeAddon();
+                System.out.println("Do you want  Add-ons?");
+                subChoice=input.next();
+                if(subChoice.equalsIgnoreCase("yes"))
+                {
+                    showCoffeeAddon();
+                   
+                }
+                transactionService.createCoffeeOrder(initialOrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
                 System.out.println("Do you want to order more coffee?");
                 subChoice = input.next();
                 if(subChoice.equalsIgnoreCase("yes"))
@@ -123,7 +130,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     }
 
     public void showCoffeeAddon() throws SQLException, ClassNotFoundException {
-
+    
         System.out.println("Choose your Add On");
         ArrayList<CoffeeAddon> coffeeAddonList=coffeeAddon.getCoffeeAddon();
         for(CoffeeAddon addOn:coffeeAddonList){

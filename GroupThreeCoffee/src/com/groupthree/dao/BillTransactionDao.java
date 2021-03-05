@@ -21,23 +21,27 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 
         connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
 
-      PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM COFFEE_ORDER");
-      	ResultSet resultSet= selectStatement.executeQuery();
-      	int rowCount=0;
-        while(resultSet.next()) {
-        			   rowCount=rowCount+1;
-        }
-        rowCount++;
-        Statement insertStatement=connection.createStatement();
-        coffeeOrder.setOrderId(rowCount);
+     
+        String query="insert into COFFEE_ORDER (P_ID,ORDER_NUMBER, COFFEE_ID, COFFEE_SIZE_ID,COFFEE_ADDON_ID) values (?,?,?,?,?)";
+      	
+        PreparedStatement insertStatement=connection.prepareStatement(query);
         coffeeOrder.setOrderNumber(orderNum);
         coffeeOrder.setCoffeeId(selectedCoffeeType);
         coffeeOrder.setCoffeeSizeId(selectedCoffeeSize);
-        coffeeOrder.setCoffeeAddonId(selectedAddon);
-        String query="Insert into COFFEE_ORDER values("+coffeeOrder.getOrderId()+
-                ",'"+coffeeOrder.getOrderNumber()+"','"+coffeeOrder.getCoffeeId()+"','"+coffeeOrder.getCoffeeSizeId()+
-                "','"+coffeeOrder.getCoffeeAddonId()+"')";
-        int rows=insertStatement.executeUpdate(query);
+        if(selectedAddon==0)
+        {
+        	coffeeOrder.setCoffeeAddonId(NULL);
+        }
+        else
+        {
+        	coffeeOrder.setCoffeeAddonId(selectedAddon);
+        }
+        insertStatement.setInt(1, 6);
+        insertStatement.setString(2, coffeeOrder.getOrderNumber());
+        insertStatement.setInt(3, coffeeOrder.getCoffeeId());
+        insertStatement.setInt(4, coffeeOrder.getCoffeeSizeId());
+        insertStatement.setInt(5, coffeeOrder.getCoffeeAddonId());
+        insertStatement.executeUpdate();
 
         connection.close();
     }
