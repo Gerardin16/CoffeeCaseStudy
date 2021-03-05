@@ -47,8 +47,7 @@ CREATE TABLE COFFEE_ORDER
   CONSTRAINT order_coffeesize_fk FOREIGN KEY(COFFEE_SIZE_ID)
   REFERENCES COFFEE_SIZE(COFFEE_SIZE_ID),
   CONSTRAINT order_coffeeaddon_fk FOREIGN KEY(COFFEE_ADDON_ID)
-  REFERENCES COFFEE_ADDONS(COFFEE_ADDON_ID),
-  CONSTRAINT order_ordernum_uk UNIQUE(ORDER_NUMBER)
+  REFERENCES COFFEE_ADDONS(COFFEE_ADDON_ID)
 );
 
 --Bill Order Table--
@@ -73,7 +72,7 @@ CREATE TABLE BILL_ORDER
   CONSTRAINT coffee_bill_pk PRIMARY KEY (BILL_ID) ,
   CONSTRAINT order_coffeeorder_fk FOREIGN KEY (ORDER_NUMBER)
   REFERENCES COFFEE_ORDER(ORDER_NUMBER),
- CONSTRAINT order_coffeeperson_fk FOREIGN KEY(P_ID)
+ CONSTRAINT order_billperson_fk FOREIGN KEY(P_ID)
   REFERENCES PERSON(PID),
   CONSTRAINT order_coffeevoucher_fk FOREIGN KEY (VOUCHER_ID)
   REFERENCES VOUCHER(VOUCHER_ID)
@@ -98,11 +97,7 @@ INSERT INTO COFFEE_VOUCHER VALUES(401,'BZH30','30% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(402,'BZH10','10% OFFER');
 INSERT INTO COFFEE_VOUCHER VALUES(403,'BZH20','20% OFFER');
 
-<<<<<<< HEAD
 PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
-=======
----- PERSON TABLE CREATION, INSERT and SELECT using sequence, Trigger------
->>>>>>> c67e12ff9e8d32a21c4b6d914b832e2dc8f9a1be
 CREATE SEQUENCE pid_seq;
 
 CREATE TRIGGER pid
@@ -134,7 +129,10 @@ INSERT INTO person (person_name, person_phoneno)
 VALUES ('Surya', 9876548888);
 INSERT INTO person (person_name, person_phoneno)
 VALUES ('Sujata', 9000080000);
-<<<<<<< HEAD
 
-=======
->>>>>>> c67e12ff9e8d32a21c4b6d914b832e2dc8f9a1be
+
+alter table COFFEE_ORDER add ORDER_DATE date default null;
+alter table COFFEE_ORDER modify ORDER_DATE default sysdate;
+
+alter table BILL_ORDER add BILL_DATE date default null;
+alter table BILL_ORDER modify BILL_DATE default sysdate;

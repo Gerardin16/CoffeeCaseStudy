@@ -40,6 +40,10 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		ArrayList<CoffeeVoucher> coffeeVoucherList=coffeeVoucher.getCoffeeVoucher();
 		for(CoffeeVoucher voucher:coffeeVoucherList)
 		{
+			if(selectedVoucher==0)
+				discount=0.0;
+			else
+			{
 			if(selectedVoucher==voucher.getVoucherId())
 			{
 				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH30"))
@@ -49,6 +53,8 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
 					discount=0.1*totalValue;
 			}
+			}
+				
 		}
 		netValue=totalValue-discount;
 		gstTax=netValue*GST_TAX;
@@ -89,10 +95,8 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		
 	}
 
-	@Override
-	public String generateOrderNumber(String initialOrderNum, String c, int count) {
-		return initialOrderNum+c+count;
-	}
+	
+
 
 
 }

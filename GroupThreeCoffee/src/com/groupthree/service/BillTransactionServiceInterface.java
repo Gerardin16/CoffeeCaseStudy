@@ -18,5 +18,5 @@ public interface BillTransactionServiceInterface {
 
     void createCoffeeOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon) throws SQLException, ClassNotFoundException;
 
-    String generateOrderNumber(String initialOrderNum, String c, int count);
+
 }

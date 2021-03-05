@@ -19,7 +19,7 @@ public class CoffeeVoucherDao implements CoffeeVoucherDaoInterface{
         ArrayList<CoffeeVoucher> coffeeVouchers= new ArrayList<>();
 
         connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system","wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM VOUCHER");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM VOUCHER WHERE VOUCHER_CODE<>'DUMMY'");
 
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {

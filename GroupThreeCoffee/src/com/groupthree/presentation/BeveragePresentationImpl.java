@@ -60,7 +60,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             System.out.println("Welcome to Group Three Coffee, Please place your order");
             count=0;
             randomNum=transactionService.createRandomOrderNumber();
-        	initialOrderNum=initialOrderNum+randomNum;
+            OrderNum=initialOrderNum+randomNum;
             do {
             	
                 showCoffeeType();
@@ -72,12 +72,14 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                     showCoffeeAddon();
                    
                 }
-                transactionService.createCoffeeOrder(initialOrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
+                else
+                {
+                	transactionService.createCoffeeOrder(OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
+                }
                 System.out.println("Do you want to order more coffee?");
                 subChoice = input.next();
-                if(subChoice.equalsIgnoreCase("yes"))
-                count++;
-              OrderNum=transactionService.generateOrderNumber(initialOrderNum,"C",count);
+               
+             
 
             }while(subChoice.equalsIgnoreCase("yes"));
             showVoucher();
@@ -104,7 +106,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     }
 
     public void printBill(String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
-       ArrayList bill =transactionService.generateBill(initialOrderNum,selectedVoucher);
+       ArrayList bill =transactionService.generateBill(OrderNum,selectedVoucher);
         BeverageHelper.displayCoffeeBill(bill);
 
     }
@@ -142,7 +144,6 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 selectedAddon=addon.getCoffeeAddonId();
             }
         }
-        OrderNum=transactionService.generateOrderNumber(initialOrderNum,"A",count);
         transactionService.createCoffeeOrder(OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
         System.out.println("=========================");
         System.out.println("Do you want more Add-ons?");

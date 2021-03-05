@@ -36,7 +36,8 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
         {
         	coffeeOrder.setCoffeeAddonId(selectedAddon);
         }
-        insertStatement.setInt(1, 6);
+//        need to change below value
+        insertStatement.setInt(1, 4);
         insertStatement.setString(2, coffeeOrder.getOrderNumber());
         insertStatement.setInt(3, coffeeOrder.getCoffeeId());
         insertStatement.setInt(4, coffeeOrder.getCoffeeSizeId());

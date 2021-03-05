@@ -1,4 +1,4 @@
-package com.groupthree.dao;
+package com.groupthree.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.groupthree.bean.PersonDetails;
 import com.groupthree.util.OracleConnectionManagement;
 
-public class PersonDetailsDao implements PersonDetailsDaoInterface{
+public class PersonDetailsService implements PersonDetailsServiceInterface{
 	
 		@Override
 		public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
