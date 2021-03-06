@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class BeverageHelper {
+	public static void displayPersonName(PersonDetails pt){
+		System.out.println(pt.getPersonName());
+	}
 
 	public static void displayCoffeeType(CoffeeType ct){
 		System.out.println(ct.getCoffeeName()+" - "+ ct.getCoffeeNamePrice());

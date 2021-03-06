@@ -1,6 +1,7 @@
 package com.groupthree.presentation;
 import java.sql.SQLException;
 public interface BeveragePresentationInterface {
+    public void showPersonDetails() throws ClassNotFoundException, SQLException;
     public void showBeveragesMenu() throws ClassNotFoundException, SQLException;
     public void showCoffeeType() throws SQLException, ClassNotFoundException;
     public void showCoffeeSize() throws SQLException, ClassNotFoundException;

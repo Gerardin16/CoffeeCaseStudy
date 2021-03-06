@@ -15,6 +15,7 @@ import java.util.TreeMap;
 public class BeveragePresentationImpl implements BeveragePresentationInterface {
     BillTransactionServiceInterface transactionService=new BillTransactionService();
     BeverageHelper bvhelper;
+    PersonDetailsService personDetails = new PersonDetailsService();
     CoffeeAddonService coffeeAddon=new CoffeeAddonService();
     CoffeeVoucherService coffeeVoucher= new CoffeeVoucherService();
     CoffeeSizeService coffeeSize=new CoffeeSizeService();
@@ -42,7 +43,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     public void setSelectedCoffeeType(int selectedCoffeeType) {
         this.selectedCoffeeType = selectedCoffeeType;
     }
-
+    
     private String coffeeSizeChoice;
     private String coffeeAddOnChoice;
     private String voucherCode;
@@ -110,6 +111,22 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         BeverageHelper.displayCoffeeBill(bill);
 
     }
+   
+    public void showPersonDetails1() throws SQLException, ClassNotFoundException {
+    	System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
+    	PersonDetailsDao personDetailsDoa=new PersonDetailsDao();
+    	personPhoneno = input.nextLong();
+    	PersonDetails perDe=personDetailsDoa.searchRecordByPhoneno(personPhoneno);
+    		if(perDe!=null) {
+    			BeverageHelper.displayPersonName(perDe);
+        		System.out.println("Welcome "+perDe.getPersonName());
+       		}
+		
+		else
+			System.out.println("Please enter your details to get registered");
+    		System.out.println("=========================");
+    		
+    		}
 
 
     public void showVoucher() throws SQLException, ClassNotFoundException {

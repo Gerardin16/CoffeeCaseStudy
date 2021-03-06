@@ -16,11 +16,11 @@ public class PersonDetails {
 			this.personPhoneNo = personPhoneNo;
 		}
 
-		public int getPId() {
+		public int getpId() {
 			return pId;
 		}
 
-		public void setPid(int pId) {
+		public void setpId(int pId) {
 			this.pId = pId;
 		}
 

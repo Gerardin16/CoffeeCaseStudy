@@ -1,37 +1,31 @@
 package com.groupthree.service;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import com.groupthree.bean.PersonDetails;
+import com.groupthree.dao.PersonDetailsDao;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-import com.groupthree.bean.PersonDetails;
-import com.groupthree.util.OracleConnectionManagement;
+import com.groupthree.dao.PersonDetailsDaoInterface;
 
 public class PersonDetailsService implements PersonDetailsServiceInterface{
+	private PersonDetailsDao personDetailsDoa=new PersonDetailsDao();
+
+@Override
+public PersonDetails searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
+	PersonDetails personDetails= personDetailsDoa.searchRecordByPhoneno(person_phoneno);
+				
+	if(personDetails!=null) {
+	personDetails.setpId(personDetails.getpId());
+	personDetails.setPersonName(personDetails.getPersonName());
+	personDetails.setPersonPhoneNo(personDetails.getPersonPhoneNo());
 	
-		@Override
-		public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        ArrayList<PersonDetails> PersonDetails = new ArrayList<>();
-
-        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM PERSON");
-
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-        	
-        	PersonDetails PersonDetails1= new PersonDetails();
-        	PersonDetails1.setPid(resultSet.getInt("PID"));
-        	PersonDetails1.setPersonName(resultSet.getString("PERSON_NAME"));
-        	PersonDetails1.setPersonPhoneNo(resultSet.getLong("PERSON_PHONENO"));
-
-        	PersonDetails.add(PersonDetails1);
-         }
-        connection.close();
-        return PersonDetails ;
-
-    }
 }
+	return personDetails;
+	}
 
+
+@Override
+public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
+	// TODO Auto-generated method stub
+	return null;
+}	
+}

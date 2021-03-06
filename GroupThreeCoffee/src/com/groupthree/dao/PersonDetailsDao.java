@@ -1,5 +1,6 @@
 package com.groupthree.dao;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,26 +13,28 @@ import com.groupthree.util.OracleConnectionManagement;
 public class PersonDetailsDao implements PersonDetailsDaoInterface{
 	
 		@Override
-		public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        ArrayList<PersonDetails> PersonDetails = new ArrayList<>();
+		public PersonDetails searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
+			Connection connection = null;
+			PersonDetails personDetails  = null;
 
-        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM PERSON");
+			connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM PERSON WHERE PERSON_PHONENO=?");
+			statement.setLong(1, person_phoneno);
 
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-        	
-        	PersonDetails PersonDetails1= new PersonDetails();
-        	PersonDetails1.setPid(resultSet.getInt("PID"));
-        	PersonDetails1.setPersonName(resultSet.getString("PERSON_NAME"));
-        	PersonDetails1.setPersonPhoneNo(resultSet.getLong("PERSON_PHONENO"));
-
-        	PersonDetails.add(PersonDetails1);
-         }
-        connection.close();
-        return PersonDetails ;
-
-    }
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				PersonDetails personDetails1= new PersonDetails();
+				personDetails1.setpId(resultSet.getInt("PID"));
+				personDetails1.setPersonName(resultSet.getString("PERSON_NAME"));
+				personDetails1.setPersonPhoneNo(resultSet.getLong("PERSON_PHONENO"));
+			}
+			connection.close();
+			return personDetails;
 }
 
+		@Override
+		public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
+			
+			return null;
+		}
+}
