@@ -22,28 +22,25 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
 
     @Override
-    public ArrayList  generateBill(String initialOrderNum, int selectedVoucher)
+    public ArrayList  generateBill(int person,String initialOrderNum, int selectedVoucher)
 			throws ClassNotFoundException, SQLException {
-    	int totalValue=0;
+    	double totalValue=0;
     	double discount = 0;
     	double netValue;
     	double gstTax;
     	double stTax;
     	double totalBill;
 		ArrayList displayBill=new ArrayList();
-
-    	ArrayList<Integer> pricesList= billTrans.getOrders(initialOrderNum);
-    	 for(Integer price:pricesList)
-		 {
-				totalValue=totalValue+price;
-		 }
+		
 		ArrayList<CoffeeVoucher> coffeeVoucherList=coffeeVoucher.getCoffeeVoucher();
-		for(CoffeeVoucher voucher:coffeeVoucherList)
-		{
+    	totalValue= billTrans.getOrders(person,initialOrderNum);
+    
 			if(selectedVoucher==0)
 				discount=0.0;
 			else
 			{
+				for(CoffeeVoucher voucher:coffeeVoucherList)
+				{
 			if(selectedVoucher==voucher.getVoucherId())
 			{
 				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH30"))
@@ -63,7 +60,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		stTax=Math.round(stTax);
 		totalBill=netValue+gstTax+stTax;
 		totalBill=Math.round(totalBill);
-//		billTrans.createBill(initialOrderNum,selectedVoucher,totalBill);
+		billTrans.createBill(person,initialOrderNum,selectedVoucher,totalBill);
 		displayBill.add( Double.valueOf(totalValue));
 		displayBill.add (discount);
 		displayBill.add( netValue);
@@ -86,14 +83,22 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 	}
 
 
-	@Override
-	public void createCoffeeOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
-			throws SQLException, ClassNotFoundException {
-		// TODO Auto-generated method stub
 
-        billTrans.createOrder(orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
+
+
+
+	@Override
+	public void createCoffeeOrder(int person, String orderNum, int selectedCoffeeType, int selectedCoffeeSize,
+			int selectedAddon) throws ClassNotFoundException, SQLException {
+		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
 	}
+
+
+
+
+
+
 
 	
 

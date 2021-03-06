@@ -15,11 +15,11 @@ import java.util.TreeMap;
 public class BeveragePresentationImpl implements BeveragePresentationInterface {
     BillTransactionServiceInterface transactionService=new BillTransactionService();
     BeverageHelper bvhelper;
-    PersonDetailsService personDetails = new PersonDetailsService();
-    CoffeeAddonService coffeeAddon=new CoffeeAddonService();
-    CoffeeVoucherService coffeeVoucher= new CoffeeVoucherService();
-    CoffeeSizeService coffeeSize=new CoffeeSizeService();
-    CoffeeTypeService coffeeType=new CoffeeTypeService();
+    PersonDetailsServiceInterface personDetails = new PersonDetailsService();
+    CoffeeAddonServiceInterface coffeeAddon=new CoffeeAddonService();
+    CoffeeVoucherServiceInterface coffeeVoucher= new CoffeeVoucherService();
+    CoffeeSizeServiceInterface coffeeSize=new CoffeeSizeService();
+    CoffeeTypeServiceInterface coffeeType=new CoffeeTypeService();
     private int selectedCoffeeSize;
     private  int selectedVoucher;
     private int selectedAddon;
@@ -27,8 +27,17 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private int choice;
     private String subChoice;
     private String coffeeTypeChoice;
+    private int selectedPerson;
 
-    public void setSelectedCoffeeSize(int selectedCoffeeSize) {
+    public int getSelectedPerson() {
+		return selectedPerson;
+	}
+
+	public void setSelectedPerson(int selectedPerson) {
+		this.selectedPerson = selectedPerson;
+	}
+
+	public void setSelectedCoffeeSize(int selectedCoffeeSize) {
         this.selectedCoffeeSize = selectedCoffeeSize;
     }
 
@@ -49,17 +58,15 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private String voucherCode;
     private String OrderNum;
     private String initialOrderNum=ORDER_NUMBER;
-    private int count;
     private String randomNum;
     Scanner input=new Scanner(System.in);
+	private long personPhoneno;
 
-
-    @Override
-    public void showBeveragesMenu()  {
-
-        try{
-            System.out.println("Welcome to Group Three Coffee, Please place your order");
-            count=0;
+	@Override
+	public void showBeveragesMenu(int selectedPerson) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		try{
+            System.out.println("Please place your order");
             randomNum=transactionService.createRandomOrderNumber();
             OrderNum=initialOrderNum+randomNum;
             do {
@@ -75,7 +82,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 }
                 else
                 {
-                	transactionService.createCoffeeOrder(OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
+                	transactionService.createCoffeeOrder(selectedPerson,OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
                 }
                 System.out.println("Do you want to order more coffee?");
                 subChoice = input.next();
@@ -85,7 +92,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             }while(subChoice.equalsIgnoreCase("yes"));
             showVoucher();
 
-            printBill(initialOrderNum,selectedVoucher);
+            printBill(selectedPerson,OrderNum,selectedVoucher);
             System.out.println("Happy Drink! Have a good day.");
             System.out.println("================================");
 
@@ -104,29 +111,18 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         {
             System.out.println(en.getMessage());
         }
-    }
+		
+	}
 
-    public void printBill(String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
-       ArrayList bill =transactionService.generateBill(OrderNum,selectedVoucher);
+
+    public void printBill(int person,String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
+       ArrayList bill =transactionService.generateBill(person,OrderNum,selectedVoucher);
         BeverageHelper.displayCoffeeBill(bill);
 
     }
    
-    public void showPersonDetails1() throws SQLException, ClassNotFoundException {
-    	System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
-    	PersonDetailsDao personDetailsDoa=new PersonDetailsDao();
-    	personPhoneno = input.nextLong();
-    	PersonDetails perDe=personDetailsDoa.searchRecordByPhoneno(personPhoneno);
-    		if(perDe!=null) {
-    			BeverageHelper.displayPersonName(perDe);
-        		System.out.println("Welcome "+perDe.getPersonName());
-       		}
-		
-		else
-			System.out.println("Please enter your details to get registered");
-    		System.out.println("=========================");
-    		
-    		}
+ 
+    	
 
 
     public void showVoucher() throws SQLException, ClassNotFoundException {
@@ -161,13 +157,13 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 selectedAddon=addon.getCoffeeAddonId();
             }
         }
-        transactionService.createCoffeeOrder(OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
+        transactionService.createCoffeeOrder(selectedPerson,OrderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
         System.out.println("=========================");
         System.out.println("Do you want more Add-ons?");
         subChoice=input.next();
         if(subChoice.equalsIgnoreCase("yes"))
         {
-        	 count++;
+        	
             showCoffeeAddon();
            
            
@@ -211,4 +207,27 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
     }
 
+	@Override
+	public int showPersonDetails() throws ClassNotFoundException, SQLException {
+		PersonDetails person;
+		System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
+    	personPhoneno = input.nextLong();
+    	person=personDetails.searchRecordByPhoneno(personPhoneno);
+    		if(person!=null) {
+        		System.out.println("Welcome "+person.getPersonName());
+       		}
+		
+		else {
+			System.out.println("Please give your name");
+    		String personName=input.next();
+    		person=personDetails.insertPerson(personName,personPhoneno);
+    		System.out.println("Welcome "+person.getPersonName());
+    		}
+    		selectedPerson=person.getpId();
+    		return selectedPerson;
+	}
+
+
 }
+		
+

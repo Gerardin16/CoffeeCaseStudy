@@ -6,6 +6,17 @@ public class CoffeeOrder {
 	private int coffeeId;
 	private int coffeeSizeId;
 	private int coffeeAddonId;
+	private int personId;
+
+	public int getPersonId() {
+		return personId;
+	}
+
+
+	public void setPersonId(int personId) {
+		this.personId = personId;
+	}
+
 
 	public CoffeeOrder() {
 

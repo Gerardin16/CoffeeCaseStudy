@@ -15,7 +15,8 @@ public class BeveragesClient {
 
 
             while (true) {
-                beveragePresentation.showBeveragesMenu();
+            	int selectedPerson=beveragePresentation.showPersonDetails();
+                beveragePresentation.showBeveragesMenu(selectedPerson);
             }
 
     }

@@ -4,12 +4,17 @@ import com.groupthree.bean.CoffeeAddon;
 import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeSize;
 import com.groupthree.bean.CoffeeType;
+import com.groupthree.bean.DisplayBill;
+import com.groupthree.bean.PersonDetails;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
 public class BeverageHelper {
+	static DisplayBill <String, Double> objBill;
+  
+       
 	public static void displayPersonName(PersonDetails pt){
 		System.out.println(pt.getPersonName());
 	}
@@ -28,21 +33,19 @@ public class BeverageHelper {
 
 		System.out.println("==========================");
 		System.out.println("Final Invoice");
-//		for(int index=0;index< bill.size();index++){
-//			System.out.println(bill.get(index));
-//		}
-		System.out.print("Total Value:");
-		System.out.println(bill.get(0));
-		System.out.print("Discount:");
-		System.out.println(bill.get(1));
-		System.out.print("Net Value:");
-		System.out.println(bill.get(2));
-		System.out.print("GST:");
-		System.out.println(bill.get(3));
-		System.out.print("Service Tax:");
-		System.out.println(bill.get(4));
-		System.out.print("Total Bill:");
-		System.out.println(bill.get(5));
+		objBill = new DisplayBill<String, Double>("Total Value:",(Double) bill.get(0)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Discount:",(Double) bill.get(1)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Net Value:",(Double) bill.get(2)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("GST:",(Double) bill.get(3)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Service Tax:",(Double) bill.get(4)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Total Bill:",(Double) bill.get(5)); 
+		objBill.print();
+		
 	}
 }
 

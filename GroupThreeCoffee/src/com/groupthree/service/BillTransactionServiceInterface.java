@@ -12,11 +12,13 @@ public interface BillTransactionServiceInterface {
     double SERVICE_TAX=0.18;
 
 
-    public ArrayList generateBill(String initialOrderNum, int selectedVoucher)throws ClassNotFoundException,SQLException;
+    public ArrayList generateBill(int person,String initialOrderNum, int selectedVoucher)throws ClassNotFoundException,SQLException;
 
     public String createRandomOrderNumber();
 
-    void createCoffeeOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon) throws SQLException, ClassNotFoundException;
+   
+	public void createCoffeeOrder(int person, String orderNum, int selectedCoffeeType, int selectedCoffeeSize,
+			int selectedAddon) throws ClassNotFoundException, SQLException;
 
 
 }

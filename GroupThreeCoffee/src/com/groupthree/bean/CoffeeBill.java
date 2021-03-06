@@ -5,7 +5,16 @@ public class CoffeeBill {
 		private String orderNumber;
 		private int voucherId;
 		private double totalAmt;
+		private int personId;
 		
+		public int getPersonId() {
+			return personId;
+		}
+
+		public void setPersonId(int personId) {
+			this.personId = personId;
+		}
+
 		public CoffeeBill() {
 			
 		}

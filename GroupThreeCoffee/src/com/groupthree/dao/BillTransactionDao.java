@@ -14,7 +14,7 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
     private static final int NULL = 0;
 
 	@Override
-    public void createOrder(String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
+    public void createOrder(int person,String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
             throws ClassNotFoundException, SQLException {
         Connection connection = null;
          CoffeeOrder coffeeOrder=new CoffeeOrder();
@@ -25,6 +25,7 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
         String query="insert into COFFEE_ORDER (P_ID,ORDER_NUMBER, COFFEE_ID, COFFEE_SIZE_ID,COFFEE_ADDON_ID) values (?,?,?,?,?)";
       	
         PreparedStatement insertStatement=connection.prepareStatement(query);
+        coffeeOrder.setPersonId(person);
         coffeeOrder.setOrderNumber(orderNum);
         coffeeOrder.setCoffeeId(selectedCoffeeType);
         coffeeOrder.setCoffeeSizeId(selectedCoffeeSize);
@@ -37,7 +38,7 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
         	coffeeOrder.setCoffeeAddonId(selectedAddon);
         }
 //        need to change below value
-        insertStatement.setInt(1, 4);
+        insertStatement.setInt(1, coffeeOrder.getPersonId());
         insertStatement.setString(2, coffeeOrder.getOrderNumber());
         insertStatement.setInt(3, coffeeOrder.getCoffeeId());
         insertStatement.setInt(4, coffeeOrder.getCoffeeSizeId());
@@ -48,12 +49,13 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
     }
 
 	@Override
-	public ArrayList getOrders(String initialOrderNum) throws SQLException, ClassNotFoundException {
+	public double getOrders(int person,String initialOrderNum) throws SQLException, ClassNotFoundException {
+		 double totalSum=0.0;
 		Connection connection = null;
-		ArrayList<Integer> prices = new ArrayList<Integer>();
-		String queryString="Select SUM(distinct(COFFEE_NAME_PRICE)) AS coffee_types_sum,SUM(COFFEE_SIZE_PRICE) AS coffee_sizes_sum,SUM(COFFEE_ADDON_PRICE) AS coffee_addons_sum  from COFFEE_ORDER co inner join COFFEE_TYPE ct\r\n"
+//		ArrayList<Integer> prices = new ArrayList<Integer>();
+		String queryString="Select  SUM(COFFEE_NAME_PRICE+COFFEE_SIZE_PRICE+COFFEE_ADDON_PRICE) as TOTAL_SUM  from COFFEE_ORDER co inner join COFFEE_TYPE ct\r\n"
 				+ "on co.COFFEE_ID=ct.COFFEE_ID inner join COFFEE_SIZE cs on co.COFFEE_SIZE_ID=cs.COFFEE_SIZE_ID\r\n"
-				+ "inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where ORDER_NUMBER LIKE '"+initialOrderNum+"%'";
+				+ "inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where P_ID="+person+"and ORDER_NUMBER='"+initialOrderNum+"'";
 
 		connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
 		PreparedStatement statement = connection.prepareStatement(queryString);
@@ -61,33 +63,27 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 
-
-			prices.add(resultSet.getInt("COFFEE_TYPES_SUM"));
-			prices.add(resultSet.getInt("COFFEE_SIZES_SUM"));
-			prices.add(resultSet.getInt("COFFEE_ADDONS_SUM"));
+			totalSum=resultSet.getDouble("TOTAL_SUM");
+//			prices.add(resultSet.getInt("COFFEE_TYPES_SUM"));
+//			prices.add(resultSet.getInt("COFFEE_SIZES_SUM"));
+//			prices.add(resultSet.getInt("COFFEE_ADDONS_SUM"));
 
 
 		}
 		connection.close();
-		return prices ;
+		return totalSum ;
 	}
 
 	@Override
-	public void createBill(String initialOrderNum, int selectedVoucher, double totalBill) throws SQLException, ClassNotFoundException {
+	public void createBill(int person,String initialOrderNum, int selectedVoucher, double totalBill) throws SQLException, ClassNotFoundException {
 		Connection connection = null;
 		CoffeeBill coffeeBill=new CoffeeBill();
 
 		connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-
-		PreparedStatement selectStatement = connection.prepareStatement("SELECT * FROM BILL_ORDER");
-		ResultSet resultSet= selectStatement.executeQuery();
-		int rowCount=0;
-		while(resultSet.next()) {
-			rowCount=rowCount+1;
-		}
-		rowCount++;
-		Statement insertStatement=connection.createStatement();
-		coffeeBill.setBillId(rowCount);
+		   String query="insert into BILL_ORDER (P_ID,ORDER_NUMBER,VOUCHER_ID,TOTAL_BILL_AMT) values (?,?,?,?)";
+		PreparedStatement insertStatement = connection.prepareStatement(query);
+	
+		coffeeBill.setPersonId(person);
 		coffeeBill.setOrderNumber(initialOrderNum);
 		if (selectedVoucher==0)	
 		coffeeBill.setVoucherId(NULL);
@@ -95,11 +91,13 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		coffeeBill.setVoucherId(selectedVoucher);
 			
 		coffeeBill.setTotalAmt(totalBill);
-		String query="Insert into BILL_ORDER values("+coffeeBill.getBillId()+
-				",'"+coffeeBill.getOrderNumber()+"','"+coffeeBill.getVoucherId()+"','"+coffeeBill.getTotalAmt()+
-				"')";
-
-		int rows=insertStatement.executeUpdate(query);
+		
+		  insertStatement.setInt(1, coffeeBill.getPersonId());
+	        insertStatement.setString(2, coffeeBill.getOrderNumber());
+	        insertStatement.setInt(3, coffeeBill.getVoucherId());
+	        insertStatement.setDouble(4, coffeeBill.getTotalAmt());
+	       
+		 insertStatement.executeUpdate();
 		connection.close();
 	}
 

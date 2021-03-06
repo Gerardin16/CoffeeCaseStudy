@@ -7,7 +7,11 @@ import com.groupthree.bean.PersonDetails;
 
 public interface PersonDetailsServiceInterface {
 
-	    ArrayList<PersonDetails> getPersonDetails()throws ClassNotFoundException, SQLException;
+//	    PersonDetails getPersonDetails()throws ClassNotFoundException, SQLException;
 		PersonDetails searchRecordByPhoneno(long person_phoneno)throws ClassNotFoundException,SQLException;
+
+		PersonDetails insertPerson(String personName, long personPhoneno) throws ClassNotFoundException, SQLException;
+
+	
 }
 

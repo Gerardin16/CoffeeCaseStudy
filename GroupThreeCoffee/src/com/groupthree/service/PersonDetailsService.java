@@ -6,12 +6,13 @@ import java.util.ArrayList;
 
 import com.groupthree.dao.PersonDetailsDaoInterface;
 
+
 public class PersonDetailsService implements PersonDetailsServiceInterface{
-	private PersonDetailsDao personDetailsDoa=new PersonDetailsDao();
+	private PersonDetailsDao personDetailsDao=new PersonDetailsDao();
 
 @Override
 public PersonDetails searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
-	PersonDetails personDetails= personDetailsDoa.searchRecordByPhoneno(person_phoneno);
+	PersonDetails personDetails= personDetailsDao.searchRecordByPhoneno(person_phoneno);
 				
 	if(personDetails!=null) {
 	personDetails.setpId(personDetails.getpId());
@@ -22,10 +23,14 @@ public PersonDetails searchRecordByPhoneno(long person_phoneno) throws ClassNotF
 	return personDetails;
 	}
 
-
 @Override
-public ArrayList<PersonDetails> getPersonDetails() throws ClassNotFoundException, SQLException {
+public PersonDetails insertPerson(String name,long personPhoneno) throws ClassNotFoundException, SQLException {
 	// TODO Auto-generated method stub
-	return null;
-}	
+	return  personDetailsDao.insertPerson(name, personPhoneno);
+}
+
+
+
+
+
 }
