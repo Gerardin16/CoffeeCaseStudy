@@ -1,4 +1,4 @@
-package com.groupthree.bean;
+package com.groupthree.util;
 
 public class DisplayBill<BT,BN> {
 	BT obj1; 
