@@ -1,12 +1,30 @@
 package com.groupthree.bean;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="COFFEE_SIZE")
 public class CoffeeSize {
+	    @Id
+	    @Column(name="COFFEE_SIZE_ID")
 		private int coffeeSizeId;
+	    @Column(name="COFFEE_SIZE")
 		private String coffeeSizeName;
+	    @Column(name="COFFEE_SIZE_PRICE")
 		private int coffeeSizePrice;
 		
-		public CoffeeSize() {
 		
+
+		public CoffeeSize() {
+			
+		}
+
+		public CoffeeSize(int coffeeSizeId) {
+			super();
+			this.coffeeSizeId = coffeeSizeId;
 		}
 
 		public CoffeeSize(int coffeeSizeId, String coffeeSizeName, int coffeeSizePrice) {

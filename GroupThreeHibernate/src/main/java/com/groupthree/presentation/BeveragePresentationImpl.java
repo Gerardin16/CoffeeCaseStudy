@@ -209,21 +209,27 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 	@Override
 	public int showPersonDetails() throws ClassNotFoundException, SQLException {
-		PersonDetails person;
+		ArrayList<PersonDetails> person;
 		System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
     	personPhoneno = input.nextLong();
     	person=personDetails.searchRecordByPhoneno(personPhoneno);
-    		if(person!=null) {
-        		System.out.println("Welcome "+person.getPersonName());
+    		if(person.size()!=0) {
+    			 for(PersonDetails per:person){
+    				 System.out.println("Welcome "+per.getPersonName());
+    				 selectedPerson=per.getpId();
+    		       }
+        
        		}
 		
 		else {
+			PersonDetails insertPerson;
 			System.out.println("Please give your name");
     		String personName=input.next();
-    		person=personDetails.insertPerson(personName,personPhoneno);
-    		System.out.println("Welcome "+person.getPersonName());
+    		insertPerson=personDetails.insertPerson(personName,personPhoneno);
+    		System.out.println("Welcome "+insertPerson.getPersonName());
+    		selectedPerson=insertPerson.getpId();
     		}
-    		selectedPerson=person.getpId();
+    		
     		return selectedPerson;
 	}
 

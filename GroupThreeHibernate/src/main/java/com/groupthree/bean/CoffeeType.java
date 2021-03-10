@@ -1,9 +1,19 @@
 package com.groupthree.bean;
 
-public class CoffeeType {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="COFFEE_TYPE")
+public class CoffeeType {
+	@Id
+	@Column(name="COFFEE_ID")
 	private int coffeeId;
+	@Column(name="COFFEE_NAME")
 	private String coffeeName;
+	@Column(name="COFFEE_NAME_PRICE")
 	private int coffeeNamePrice;
 	
 	public CoffeeType() {
@@ -19,6 +29,11 @@ public class CoffeeType {
 
 
 
+
+	public CoffeeType(int coffeeId) {
+		super();
+		this.coffeeId = coffeeId;
+	}
 
 	public int getCoffeeId() {
 		return coffeeId;

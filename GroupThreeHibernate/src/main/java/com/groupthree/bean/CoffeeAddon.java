@@ -1,13 +1,31 @@
 package com.groupthree.bean;
 
-public class CoffeeAddon {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="COFFEE_ADDONS")
+public class CoffeeAddon {
+	
+	@Id
+	@Column(name="COFFEE_ADDON_ID")
 	private int coffeeAddonId;
+	@Column(name="COFFEE_ADDON_NAME")
 	private String coffeeAddonName;
+	@Column(name="COFFEE_ADDON_PRICE")
 	private int coffeeAddonPrice;
 	
+	
+
 	public CoffeeAddon() {
 		
+	}
+
+	public CoffeeAddon(int coffeeAddonId) {
+		super();
+		this.coffeeAddonId = coffeeAddonId;
 	}
 
 	public CoffeeAddon(int coffeeAddonId, String coffeeAddonName, int coffeeAddonPrice) {

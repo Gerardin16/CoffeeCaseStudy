@@ -4,10 +4,24 @@ package com.groupthree.dao;
 import com.groupthree.bean.CoffeeAddon;
 import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeOrder;
+import com.groupthree.bean.CoffeeSize;
+import com.groupthree.bean.CoffeeType;
+import com.groupthree.bean.CoffeeVoucher;
+import com.groupthree.bean.PersonDetails;
 import com.groupthree.util.OracleConnectionManagement;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 public class BillTransactionDao implements BillTransactionDaoInterface {
 
@@ -16,89 +30,92 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 	@Override
     public void createOrder(int person,String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
             throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-         CoffeeOrder coffeeOrder=new CoffeeOrder();
+        
+        StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-
-     
-        String query="insert into COFFEE_ORDER (P_ID,ORDER_NUMBER, COFFEE_ID, COFFEE_SIZE_ID,COFFEE_ADDON_ID) values (?,?,?,?,?)";
-      	
-        PreparedStatement insertStatement=connection.prepareStatement(query);
-        coffeeOrder.setPersonId(person);
-        coffeeOrder.setOrderNumber(orderNum);
-        coffeeOrder.setCoffeeId(selectedCoffeeType);
-        coffeeOrder.setCoffeeSizeId(selectedCoffeeSize);
-        if(selectedAddon==0)
-        {
-        	coffeeOrder.setCoffeeAddonId(NULL);
-        }
-        else
-        {
-        	coffeeOrder.setCoffeeAddonId(selectedAddon);
-        }
-//        need to change below value
-        insertStatement.setInt(1, coffeeOrder.getPersonId());
-        insertStatement.setString(2, coffeeOrder.getOrderNumber());
-        insertStatement.setInt(3, coffeeOrder.getCoffeeId());
-        insertStatement.setInt(4, coffeeOrder.getCoffeeSizeId());
-        insertStatement.setInt(5, coffeeOrder.getCoffeeAddonId());
-        insertStatement.executeUpdate();
-
-        connection.close();
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		CoffeeOrder coffeeOrder=new CoffeeOrder(orderNum);
+		PersonDetails per=new PersonDetails(person);
+		CoffeeType ct=new CoffeeType(selectedCoffeeType);
+		CoffeeSize cs=new CoffeeSize(selectedCoffeeSize);
+		CoffeeAddon ca=new CoffeeAddon(selectedAddon);
+		
+		coffeeOrder.setPersonId(per);
+		coffeeOrder.setCoffeeId(ct);
+		coffeeOrder.setCoffeeSizeId(cs);
+		coffeeOrder.setCoffeeAddonId(ca);
+		
+		session.save(coffeeOrder);
+		transaction.commit();
+		session.close();
+		factory.close();
+		
     }
 
 	@Override
 	public double getOrders(int person,String initialOrderNum) throws SQLException, ClassNotFoundException {
 		 double totalSum=0.0;
-		Connection connection = null;
-//		ArrayList<Integer> prices = new ArrayList<Integer>();
-		String queryString="Select  SUM(COFFEE_NAME_PRICE+COFFEE_SIZE_PRICE+COFFEE_ADDON_PRICE) as TOTAL_SUM  from COFFEE_ORDER co inner join COFFEE_TYPE ct\r\n"
-				+ "on co.COFFEE_ID=ct.COFFEE_ID inner join COFFEE_SIZE cs on co.COFFEE_SIZE_ID=cs.COFFEE_SIZE_ID\r\n"
-				+ "inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where P_ID="+person+"and ORDER_NUMBER='"+initialOrderNum+"'";
+		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-		connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-		PreparedStatement statement = connection.prepareStatement(queryString);
-
-		ResultSet resultSet = statement.executeQuery();
-		while (resultSet.next()) {
-
-			totalSum=resultSet.getDouble("TOTAL_SUM");
-//			prices.add(resultSet.getInt("COFFEE_TYPES_SUM"));
-//			prices.add(resultSet.getInt("COFFEE_SIZES_SUM"));
-//			prices.add(resultSet.getInt("COFFEE_ADDONS_SUM"));
-
-
-		}
-		connection.close();
-		return totalSum ;
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		
+		Query query = session.createQuery("SELECT SUM(ct.coffeeNamePrice+cs.coffeeSizePrice+ca.coffeeAddonPrice) as TOTAL_SUM  from CoffeeOrder co inner join CoffeeType ct"
+								+" on co.coffeeId=ct.coffeeId inner join CoffeeSize cs on co.coffeeSizeId=cs.coffeeSizeId"
+								+" inner join CoffeeAddon ca on co.coffeeAddonId=ca.coffeeAddonId where P_ID=:per and ORDER_NUMBER=:ord" );
+		query.setParameter("per", person) ;    
+		query.setParameter("ord", initialOrderNum) ;
+		long result=(long) query.getSingleResult();
+		totalSum=(double) result;
+		return   totalSum;
 	}
 
 	@Override
 	public void createBill(int person,String initialOrderNum, int selectedVoucher, double totalBill) throws SQLException, ClassNotFoundException {
-		Connection connection = null;
-		CoffeeBill coffeeBill=new CoffeeBill();
-
-		connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-		   String query="insert into BILL_ORDER (P_ID,ORDER_NUMBER,VOUCHER_ID,TOTAL_BILL_AMT) values (?,?,?,?)";
-		PreparedStatement insertStatement = connection.prepareStatement(query);
-	
-		coffeeBill.setPersonId(person);
-		coffeeBill.setOrderNumber(initialOrderNum);
-		if (selectedVoucher==0)	
-		coffeeBill.setVoucherId(NULL);
-		else
-		coffeeBill.setVoucherId(selectedVoucher);
-			
-		coffeeBill.setTotalAmt(totalBill);
 		
-		  insertStatement.setInt(1, coffeeBill.getPersonId());
-	        insertStatement.setString(2, coffeeBill.getOrderNumber());
-	        insertStatement.setInt(3, coffeeBill.getVoucherId());
-	        insertStatement.setDouble(4, coffeeBill.getTotalAmt());
-	       
-		 insertStatement.executeUpdate();
-		connection.close();
+		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
+
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		CoffeeBill coffeeBill=new CoffeeBill(totalBill);
+		
+		PersonDetails per=new PersonDetails(person);
+		CoffeeOrder cord=new CoffeeOrder(initialOrderNum);
+		CoffeeVoucher cvou=new CoffeeVoucher(selectedVoucher);
+		
+		coffeeBill.setPersonId(per);
+		coffeeBill.setOrderNumber(cord);
+		coffeeBill.setVoucher(cvou);
+		
+		session.save(coffeeBill);
+		transaction.commit();
+		session.close();
+		factory.close();
 	}
 
 

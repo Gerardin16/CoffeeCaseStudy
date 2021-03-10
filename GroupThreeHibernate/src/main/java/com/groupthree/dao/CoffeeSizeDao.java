@@ -9,30 +9,39 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 public class CoffeeSizeDao implements CoffeeSizeDaoInterface {
 
 
     @Override
     public ArrayList<CoffeeSize> getCoffeeSize() throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        ArrayList<CoffeeSize> coffeeSizes = new ArrayList<>();
+    	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM COFFEE_SIZE");
-
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-
-            CoffeeSize coffeeSize = new CoffeeSize();
-            coffeeSize.setCoffeeSizeId(resultSet.getInt("COFFEE_SIZE_ID"));
-            coffeeSize.setCoffeeSizeName(resultSet.getString("COFFEE_SIZE"));
-            coffeeSize.setCoffeeSizePrice(resultSet.getInt("COFFEE_SIZE_PRICE"));
-
-            coffeeSizes.add(coffeeSize);
-        }
-        connection.close();
-        return coffeeSizes;
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		
+		Query<CoffeeSize> query = session.createQuery("from CoffeeSize");
+		       
+		List<CoffeeSize>coffeeSizes=query.getResultList();
+		return  (ArrayList<CoffeeSize>) coffeeSizes;
 
     }
 }

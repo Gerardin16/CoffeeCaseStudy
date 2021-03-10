@@ -8,62 +8,63 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.groupthree.bean.CoffeeOrder;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
+
 import com.groupthree.bean.PersonDetails;
 import com.groupthree.util.OracleConnectionManagement;
+
 
 public class PersonDetailsDao implements PersonDetailsDaoInterface{
 	
 		@Override
-		public PersonDetails searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
-			Connection connection = null;
-			PersonDetails personDetails  = null;
+		public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
+//			
+			StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+			
+			Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-			connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM PERSON WHERE PERSON_PHONENO="+person_phoneno);
-//			statement.setLong(1, person_phoneno);
-
-			ResultSet resultSet = statement.executeQuery();
-			if (resultSet.next()) {
-				 personDetails= new PersonDetails();
-				personDetails.setpId(resultSet.getInt("PID"));
-				personDetails.setPersonName(resultSet.getString("PERSON_NAME"));
-				personDetails.setPersonPhoneNo(resultSet.getLong("PERSON_PHONENO"));
-			}
-			connection.close();
-			return personDetails;
+			//For entire application one SessionFactory object : SessionFactory is SingleTon
+			SessionFactory factory=meta.getSessionFactoryBuilder().build();
+			
+			//For every Transaction one Session object
+			Session session=factory.openSession();
+			
+			Transaction transaction=session.beginTransaction();
+			
+			
+			Query<PersonDetails> query = session.createQuery("from PersonDetails where personPhoneNo=:pnum" );
+			query.setParameter("pnum", person_phoneno) ;       
+			List<PersonDetails> person=query.getResultList();
+			return   (ArrayList<PersonDetails>) person;
 }
 
 		public PersonDetails insertPerson(String name, long personPhoneno) throws ClassNotFoundException, SQLException {
-			// TODO Auto-generated method stub
-			 Connection connection = null;
-	         PersonDetails person=new PersonDetails();
+			StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+			
+			Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-	        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-
-	     
-	        String query="insert into PERSON(PERSON_NAME,PERSON_PHONENO) values (?,?)";
-	      	
-	        PreparedStatement insertStatement=connection.prepareStatement(query );
-	        person.setPersonName(name);
-	       person.setPersonPhoneNo(personPhoneno);
-	       
-//	        need to change below value
-	        insertStatement.setString(1, person.getPersonName());
-	        insertStatement.setLong(2, person.getPersonPhoneNo());
-	       
-	        insertStatement.executeUpdate();
-	        PreparedStatement statement = connection.prepareStatement("SELECT * FROM PERSON WHERE PERSON_PHONENO="+personPhoneno);
-//			statement.setLong(1, person_phoneno);
-
-			ResultSet resultSet = statement.executeQuery();
-			if (resultSet.next()) {
-				person.setpId(resultSet.getInt("PID"));
-				person.setPersonName(resultSet.getString("PERSON_NAME"));
-				person.setPersonPhoneNo(resultSet.getLong("PERSON_PHONENO"));
-			}
-			connection.close();
-	        return person;
-		
+			//For entire application one SessionFactory object : SessionFactory is SingleTon
+			SessionFactory factory=meta.getSessionFactoryBuilder().build();
+			
+			//For every Transaction one Session object
+			Session session=factory.openSession();
+			
+			Transaction transaction=session.beginTransaction();
+			
+			PersonDetails person=new PersonDetails(name,personPhoneno);
+			
+			session.save(person);
+			transaction.commit();
+			session.close();
+			factory.close();
+			return person;
 		}
 }

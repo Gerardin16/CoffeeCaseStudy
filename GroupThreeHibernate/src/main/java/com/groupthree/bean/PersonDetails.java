@@ -1,22 +1,37 @@
 package com.groupthree.bean;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Person")
 public class PersonDetails {
+		@Id
+		@Column(name = "PID")
+		@GeneratedValue(strategy = GenerationType.AUTO)
 		private int pId;
+		@Column(name = "PERSON_NAME")
 		private String personName;
+		@Column(name = "PERSON_PHONENO")
 		private long personPhoneNo;
 		
+		
+
 		public PersonDetails() {
 			
 		}
 
-		public PersonDetails(int pId, String personName, long personPhoneNo) {
+		public PersonDetails(int pId) {
 			super();
 			this.pId = pId;
+		}
+
+		public PersonDetails(String personName, long personPhoneNo) {
+			super();
 			this.personName = personName;
 			this.personPhoneNo = personPhoneNo;
 		}

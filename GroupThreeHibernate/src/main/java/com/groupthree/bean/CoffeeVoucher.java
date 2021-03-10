@@ -1,8 +1,20 @@
 package com.groupthree.bean;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="VOUCHER")
 public class CoffeeVoucher {
+	
+	@Id
+	@Column(name="VOUCHER_ID")
 	private int voucherId;
+	@Column(name="VOUCHER_CODE")
 	private String voucherCode;
+	@Column(name="VOUCHER_DESCRIPTION")
 	private String voucherDescription;
 	
 	public CoffeeVoucher() {
@@ -14,6 +26,13 @@ public class CoffeeVoucher {
 		this.voucherId = voucherId;
 		this.voucherCode = voucherCode;
 		this.voucherDescription = voucherDescription;
+	}
+	
+	
+
+	public CoffeeVoucher(int voucherId) {
+		super();
+		this.voucherId = voucherId;
 	}
 
 	public int getVoucherId() {

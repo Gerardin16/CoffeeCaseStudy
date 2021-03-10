@@ -9,30 +9,39 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 public class CoffeeVoucherDao implements CoffeeVoucherDaoInterface{
 
 
     @Override
     public ArrayList<CoffeeVoucher> getCoffeeVoucher() throws ClassNotFoundException,SQLException {
-        Connection connection = null;
-        ArrayList<CoffeeVoucher> coffeeVouchers= new ArrayList<>();
+StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-        connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system","wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM VOUCHER WHERE VOUCHER_CODE<>'DUMMY'");
-
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-
-            CoffeeVoucher coffeeVoucher= new CoffeeVoucher();
-            coffeeVoucher.setVoucherId(resultSet.getInt("VOUCHER_ID"));
-            coffeeVoucher.setVoucherCode(resultSet.getString("VOUCHER_CODE"));
-            coffeeVoucher.setVoucherDescription(resultSet.getString("VOUCHER_DESCRIPTION"));
-
-            coffeeVouchers.add(coffeeVoucher);
-        }
-        connection.close();
-        return coffeeVouchers;
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		
+		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher");
+		       
+		List<CoffeeVoucher> coffeeVouchers=query.getResultList();
+		return  (ArrayList<CoffeeVoucher>) coffeeVouchers;
 
 
     }
