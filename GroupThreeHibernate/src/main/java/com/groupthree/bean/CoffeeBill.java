@@ -21,9 +21,8 @@ public class CoffeeBill {
 		@ManyToOne
 		@JoinColumn(name = "P_ID")
 		private PersonDetails personId;
-		@ManyToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name = "ORDER_NUMBER")
-		private CoffeeOrder orderNumber;
+		@Column(name = "ORDER_NUMBER")
+		private String orderNumber;
 		@ManyToOne(cascade = CascadeType.ALL)
 		@JoinColumn(name = "VOUCHER_ID")
 		private CoffeeVoucher voucher;
@@ -41,10 +40,11 @@ public class CoffeeBill {
 		public void setPersonId(PersonDetails personId) {
 			this.personId = personId;
 		}
-		public CoffeeOrder getOrderNumber() {
+	
+		public String getOrderNumber() {
 			return orderNumber;
 		}
-		public void setOrderNumber(CoffeeOrder orderNumber) {
+		public void setOrderNumber(String orderNumber) {
 			this.orderNumber = orderNumber;
 		}
 		public CoffeeVoucher getVoucher() {
@@ -62,8 +62,11 @@ public class CoffeeBill {
 		public CoffeeBill() {
 			
 		}
-		public CoffeeBill(double totalAmt) {
+	
+	
+		public CoffeeBill(String orderNumber, double totalAmt) {
 			super();
+			this.orderNumber = orderNumber;
 			this.totalAmt = totalAmt;
 		}
 		@Override

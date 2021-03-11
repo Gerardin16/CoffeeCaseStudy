@@ -222,13 +222,18 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
        		}
 		
 		else {
-			PersonDetails insertPerson;
 			System.out.println("Please give your name");
     		String personName=input.next();
-    		insertPerson=personDetails.insertPerson(personName,personPhoneno);
-    		System.out.println("Welcome "+insertPerson.getPersonName());
-    		selectedPerson=insertPerson.getpId();
-    		}
+    		personDetails.insertPerson(personName,personPhoneno);
+    		person=personDetails.searchRecordByPhoneno(personPhoneno);
+    		if(person.size()!=0) {
+   			 for(PersonDetails per:person){
+   				 System.out.println("Welcome "+per.getPersonName());
+   				 selectedPerson=per.getpId();
+   		       }
+       
+      		}
+    	}
     		
     		return selectedPerson;
 	}

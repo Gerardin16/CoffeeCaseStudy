@@ -145,11 +145,26 @@ public class CoffeeOrder {
 
 
 
+
+
+
+	
+
+
+
+
 	@Override
 	public String toString() {
 		return "CoffeeOrder [orderId=" + orderId + ", personId=" + personId + ", orderNumber=" + orderNumber
 				+ ", coffeeId=" + coffeeId + ", coffeeSizeId=" + coffeeSizeId + ", coffeeAddonId=" + coffeeAddonId
 				+ "]";
+	}
+
+
+	public CoffeeOrder(PersonDetails personId, String orderNumber) {
+		super();
+		this.personId = personId;
+		this.orderNumber = orderNumber;
 	}
 
 

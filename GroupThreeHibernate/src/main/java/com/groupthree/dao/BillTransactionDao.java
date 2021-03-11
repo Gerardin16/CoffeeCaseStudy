@@ -102,14 +102,13 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		
 		Transaction transaction=session.beginTransaction();
 		
-		CoffeeBill coffeeBill=new CoffeeBill(totalBill);
+		CoffeeBill coffeeBill=new CoffeeBill(initialOrderNum,totalBill);
 		
 		PersonDetails per=new PersonDetails(person);
-		CoffeeOrder cord=new CoffeeOrder(initialOrderNum);
+	
 		CoffeeVoucher cvou=new CoffeeVoucher(selectedVoucher);
 		
 		coffeeBill.setPersonId(per);
-		coffeeBill.setOrderNumber(cord);
 		coffeeBill.setVoucher(cvou);
 		
 		session.save(coffeeBill);
