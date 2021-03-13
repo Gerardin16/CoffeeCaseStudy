@@ -1,5 +1,6 @@
 package com.groupthree.dao;
 import java.beans.Statement;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +20,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 
 import com.groupthree.bean.PersonDetails;
-import com.groupthree.util.OracleConnectionManagement;
+
 
 
 public class PersonDetailsDao implements PersonDetailsDaoInterface{
