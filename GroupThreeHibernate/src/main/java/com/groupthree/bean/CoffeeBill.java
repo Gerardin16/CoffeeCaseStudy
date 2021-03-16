@@ -23,7 +23,7 @@ public class CoffeeBill {
 		private PersonDetails personId;
 		@Column(name = "ORDER_NUMBER")
 		private String orderNumber;
-		@ManyToOne(cascade = CascadeType.ALL)
+		@ManyToOne
 		@JoinColumn(name = "VOUCHER_ID")
 		private CoffeeVoucher voucher;
 		@Column(name = "TOTAL_BILL_AMT")

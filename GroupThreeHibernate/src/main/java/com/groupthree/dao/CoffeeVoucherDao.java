@@ -39,7 +39,7 @@ StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibe
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher");
+		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherCode <> 'DUMMY'"");
 		       
 		List<CoffeeVoucher> coffeeVouchers=query.getResultList();
 		return  (ArrayList<CoffeeVoucher>) coffeeVouchers;
