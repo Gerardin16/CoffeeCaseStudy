@@ -50,7 +50,7 @@ public class BeveragesConfig {
 	        hibernateProperties.setProperty(
 	          "hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
 	        hibernateProperties.setProperty(
-			          "hibernate.show_sql", "true");
+			          "hibernate.show_sql", "false");
 	        return hibernateProperties;
 
 	}
