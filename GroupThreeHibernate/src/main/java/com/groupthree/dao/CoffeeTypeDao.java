@@ -43,7 +43,10 @@ public class CoffeeTypeDao implements CoffeeTypeDaoInterface {
 		Query<CoffeeType> query = session.createQuery("from CoffeeType");
 		       
 		List<CoffeeType>coffeeTypes=query.getResultList();
+		transaction.commit();
+		session.close();
 		return  (ArrayList<CoffeeType>) coffeeTypes;
+		
 
     }
 

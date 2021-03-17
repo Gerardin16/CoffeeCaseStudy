@@ -1,7 +1,6 @@
 package com.groupthree.dao;
 
-import com.groupthree.bean.CoffeeAddon
-;
+import com.groupthree.bean.CoffeeAddon;
 import com.groupthree.bean.CoffeeSize;
 
 
@@ -42,6 +41,8 @@ public class CoffeeAddonDao implements CoffeeAddonDaoInterface{
 		Query<CoffeeAddon> query = session.createQuery("from CoffeeAddon where coffeeAddonName<>'DUMMY'");
 		       
 		List<CoffeeAddon> coffeeAddons=query.getResultList();
+		transaction.commit();
+		session.close();
 		return  (ArrayList<CoffeeAddon>) coffeeAddons;
 
     }

@@ -5,10 +5,12 @@ package com.groupthree.presentation;
 import com.groupthree.bean.*;
 import com.groupthree.service.*;
 import com.groupthree.util.BeverageHelper;
+import com.groupthree.util.OrderDetails;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -28,8 +30,16 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private String subChoice;
     private String coffeeTypeChoice;
     private int selectedPerson;
+    private String selectedVoucherCode;
+    public String getSelectedVoucherCode() {
+		return selectedVoucherCode;
+	}
 
-    public int getSelectedPerson() {
+	public void setSelectedVoucherCode(String selectedVoucherCode) {
+		this.selectedVoucherCode = selectedVoucherCode;
+	}
+
+	public int getSelectedPerson() {
 		return selectedPerson;
 	}
 
@@ -116,9 +126,19 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 
     public void printBill(int person,String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
+    	List<OrderDetails> orders=transactionService.getDetailedOrders(person,initialOrderNum);
        ArrayList bill =transactionService.generateBill(person,OrderNum,selectedVoucher);
-        BeverageHelper.displayCoffeeBill(bill);
-
+       System.out.println("---------------Final Invoice-------------------");
+		System.out.println("Your order number is :"+initialOrderNum);
+		System.out.println("You have ordered the below items");
+	System.out.println("Coffee--Size--Addon")	;
+	for(OrderDetails ord:orders){
+		if (ord.getOrdCoffeeAddon().equalsIgnoreCase("DUMMY"))
+			ord.setOrdCoffeeAddon("No Addon");
+		 BeverageHelper.displayDetailedOrders(ord);
+       }
+    BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
+		
     }
    
  
@@ -138,6 +158,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 if (voucherCode.equalsIgnoreCase(voucher.getVoucherCode().toString())) {
 //                    transactionService.createCoffeeOrder();
                 	selectedVoucher=voucher.getVoucherId();
+                	selectedVoucherCode = voucher.getVoucherCode();
 //                	System.out.println("Order placed");
                 }
             System.out.println("=========================");

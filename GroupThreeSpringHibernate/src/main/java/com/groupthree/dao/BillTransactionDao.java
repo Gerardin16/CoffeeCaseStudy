@@ -9,11 +9,19 @@ import com.groupthree.bean.CoffeeSize;
 import com.groupthree.bean.CoffeeType;
 import com.groupthree.bean.CoffeeVoucher;
 import com.groupthree.bean.PersonDetails;
+import com.groupthree.util.OrderDetails;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -98,6 +106,34 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		session.close();
 		
 	}
+
+	@Override
+	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
+		ArrayList<OrderDetails> orders = new ArrayList<>();
+	
+		Session session=sessionFactory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		
+		Query query = session.createQuery("select ct.coffeeName as Coffee_Name,cs.coffeeSizeName as Coffee_size,ca.coffeeAddonName as Coffee_Addon from CoffeeOrder co inner join CoffeeType ct"
+				+ " on co.coffeeId=ct.coffeeId inner join CoffeeSize cs on co.coffeeSizeId=cs.coffeeSizeId"
+				+ " inner join CoffeeAddon ca on co.coffeeAddonId=ca.coffeeAddonId where P_ID=:per and ORDER_NUMBER=:ord");
+		query.setParameter("per", person) ;    
+		query.setParameter("ord", initialOrderNum) ;
+		List<Object[]> rows=query.getResultList();
+		for(Object[] row : rows){
+			OrderDetails ord = new OrderDetails();
+			ord.setOrdCoffeeType(row[0].toString());
+			ord.setOrdCoffeeSize(row[1].toString());
+			ord.setOrdCoffeeAddon(row[2].toString());
+			orders.add(ord);
+		}
+		transaction.commit();
+		session.close();
+		return  orders;
+	}
+
 
 
 }

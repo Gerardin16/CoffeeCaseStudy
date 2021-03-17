@@ -8,9 +8,11 @@ import com.groupthree.dao.BillTransactionDaoInterface;
 import com.groupthree.dao.CoffeeVoucherDao;
 import com.groupthree.dao.CoffeeVoucherDaoInterface;
 import com.groupthree.util.BeverageHelper;
+import com.groupthree.util.OrderDetails;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -32,6 +34,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
     	double totalBill;
 		ArrayList displayBill=new ArrayList();
 		
+		
 		ArrayList<CoffeeVoucher> coffeeVoucherList=coffeeVoucher.getCoffeeVoucher();
     	totalValue= billTrans.getOrders(person,initialOrderNum);
     
@@ -47,7 +50,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 					discount=0.3*totalValue;
 				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
 					discount=0.2*totalValue;
-				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
+				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH10"))
 					discount=0.1*totalValue;
 			}
 			}
@@ -92,6 +95,14 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 			int selectedAddon) throws ClassNotFoundException, SQLException {
 		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
+	}
+
+
+
+
+	@Override
+	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
+		 return billTrans.getDetailedOrders(person,initialOrderNum);
 	}
 
 

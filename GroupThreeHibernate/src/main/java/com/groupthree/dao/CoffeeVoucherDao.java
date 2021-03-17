@@ -1,7 +1,6 @@
 package com.groupthree.dao;
 
 import com.groupthree.bean.CoffeeType;
-
 import com.groupthree.bean.CoffeeVoucher;
 
 
@@ -26,7 +25,7 @@ public class CoffeeVoucherDao implements CoffeeVoucherDaoInterface{
 
     @Override
     public ArrayList<CoffeeVoucher> getCoffeeVoucher() throws ClassNotFoundException,SQLException {
-StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+    	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 		
 		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
@@ -39,9 +38,11 @@ StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibe
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherCode <> 'DUMMY'");
+		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherCode <>'DUMMY'");
 		       
 		List<CoffeeVoucher> coffeeVouchers=query.getResultList();
+		transaction.commit();
+		session.close();
 		return  (ArrayList<CoffeeVoucher>) coffeeVouchers;
 
 

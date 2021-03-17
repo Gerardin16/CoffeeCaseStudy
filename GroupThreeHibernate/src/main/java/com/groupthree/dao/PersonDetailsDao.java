@@ -1,6 +1,5 @@
 package com.groupthree.dao;
 import java.beans.Statement;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,6 +43,8 @@ public class PersonDetailsDao implements PersonDetailsDaoInterface{
 			Query<PersonDetails> query = session.createQuery("from PersonDetails where personPhoneNo=:pnum" );
 			query.setParameter("pnum", person_phoneno) ;       
 			List<PersonDetails> person=query.getResultList();
+			transaction.commit();
+			session.close();
 			return   (ArrayList<PersonDetails>) person;
 }
 

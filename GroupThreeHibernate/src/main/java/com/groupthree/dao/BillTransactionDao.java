@@ -2,18 +2,18 @@ package com.groupthree.dao;
 
 
 import com.groupthree.bean.CoffeeAddon;
-
 import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeOrder;
 import com.groupthree.bean.CoffeeSize;
 import com.groupthree.bean.CoffeeType;
 import com.groupthree.bean.CoffeeVoucher;
 import com.groupthree.bean.PersonDetails;
-
+import com.groupthree.util.OrderDetails;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -85,6 +85,8 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		query.setParameter("ord", initialOrderNum) ;
 		long result=(long) query.getSingleResult();
 		totalSum=(double) result;
+		transaction.commit();
+		session.close();
 		return   totalSum;
 	}
 
@@ -117,6 +119,42 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		session.close();
 		factory.close();
 	}
+
+	@Override
+	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
+		ArrayList<OrderDetails> orders = new ArrayList<>();
+	
+		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		
+		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
+	
+		//For entire application one SessionFactory object : SessionFactory is SingleTon
+		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+		
+		//For every Transaction one Session object
+		Session session=factory.openSession();
+		
+		Transaction transaction=session.beginTransaction();
+		
+		
+		Query query = session.createQuery("select ct.coffeeName as Coffee_Name,cs.coffeeSizeName as Coffee_size,ca.coffeeAddonName as Coffee_Addon from CoffeeOrder co inner join CoffeeType ct"
+				+ " on co.coffeeId=ct.coffeeId inner join CoffeeSize cs on co.coffeeSizeId=cs.coffeeSizeId"
+				+ " inner join CoffeeAddon ca on co.coffeeAddonId=ca.coffeeAddonId where P_ID=:per and ORDER_NUMBER=:ord");
+		query.setParameter("per", person) ;    
+		query.setParameter("ord", initialOrderNum) ;
+		List<Object[]> rows=query.getResultList();
+		for(Object[] row : rows){
+			OrderDetails ord = new OrderDetails();
+			ord.setOrdCoffeeType(row[0].toString());
+			ord.setOrdCoffeeSize(row[1].toString());
+			ord.setOrdCoffeeAddon(row[2].toString());
+			orders.add(ord);
+		}
+		transaction.commit();
+		session.close();
+		return  orders;
+	}
+
 
 
 }

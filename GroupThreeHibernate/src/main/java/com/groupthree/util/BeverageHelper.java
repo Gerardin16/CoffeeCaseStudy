@@ -8,8 +8,10 @@ import com.groupthree.util.DisplayBill;
 import com.groupthree.bean.PersonDetails;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class BeverageHelper {
 	static DisplayBill <String, Double> objBill;
@@ -29,10 +31,15 @@ public class BeverageHelper {
 		System.out.println(ca.getCoffeeAddonName()+" - "+ca.getCoffeeAddonPrice());
 	}
 
-	public static void displayCoffeeBill(ArrayList bill) {
+	public static void displayCoffeeBill(ArrayList bill, String voucherCode) {
 
-		System.out.println("==========================");
-		System.out.println("Final Invoice");
+		
+		if(voucherCode!=null)
+			System.out.println("Your discount code is: "+voucherCode);
+		else
+			System.out.println("No discount");
+		
+		
 		objBill = new DisplayBill<String, Double>("Total Value:",(Double) bill.get(0)); 
 		objBill.print();
 		objBill = new DisplayBill<String, Double>("Discount:",(Double) bill.get(1)); 
@@ -47,5 +54,16 @@ public class BeverageHelper {
 		objBill.print();
 		
 	}
-}
 
+	@Override
+	public String toString() {
+		return "BeverageHelper [toString()=" + super.toString() + "]";
+	}
+
+	public static void displayDetailedOrders(OrderDetails ord) {
+		System.out.println(ord.getOrdCoffeeType()+" - "+ ord.getOrdCoffeeSize()+" - "+ord.getOrdCoffeeAddon());
+	}
+
+	
+
+}

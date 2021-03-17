@@ -1,7 +1,6 @@
 package com.groupthree.dao;
 
-import com.groupthree.bean.CoffeeSize
-;
+import com.groupthree.bean.CoffeeSize;
 import com.groupthree.bean.CoffeeType;
 
 
@@ -42,6 +41,8 @@ public class CoffeeSizeDao implements CoffeeSizeDaoInterface {
 		Query<CoffeeSize> query = session.createQuery("from CoffeeSize");
 		       
 		List<CoffeeSize>coffeeSizes=query.getResultList();
+		transaction.commit();
+		session.close();
 		return  (ArrayList<CoffeeSize>) coffeeSizes;
 
     }

@@ -13,9 +13,11 @@ import com.groupthree.dao.BillTransactionDaoInterface;
 import com.groupthree.dao.CoffeeVoucherDao;
 import com.groupthree.dao.CoffeeVoucherDaoInterface;
 import com.groupthree.util.BeverageHelper;
+import com.groupthree.util.OrderDetails;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 @Service
@@ -118,6 +120,13 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
 	}
+	
+
+	@Override
+	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
+		 return billTrans.getDetailedOrders(person,initialOrderNum);
+	}
+
 
 
 
