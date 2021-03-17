@@ -14,4 +14,6 @@ public interface BillTransactionDaoInterface {
 	public double getOrders(int person,String initialOrderNum) throws SQLException, ClassNotFoundException;
 
     void createBill(int person,String initialOrderNum, int selectedVoucher, double totalBill) throws SQLException, ClassNotFoundException;
+
+	public ArrayList getDetailedOrders(int person, String initialOrderNum) throws ClassNotFoundException, SQLException;
 }

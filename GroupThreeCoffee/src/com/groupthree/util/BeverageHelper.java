@@ -47,5 +47,38 @@ public class BeverageHelper {
 		objBill.print();
 		
 	}
+public static void displayCoffeeBill(ArrayList bill, String voucherCode) {
+
+		
+		if(voucherCode!=null)
+			System.out.println("Your discount code is: "+voucherCode);
+		else
+			System.out.println("No discount");
+		
+		
+		objBill = new DisplayBill<String, Double>("Total Value:",(Double) bill.get(0)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Discount:",(Double) bill.get(1)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Net Value:",(Double) bill.get(2)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("GST:",(Double) bill.get(3)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Service Tax:",(Double) bill.get(4)); 
+		objBill.print();
+		objBill = new DisplayBill<String, Double>("Total Bill:",(Double) bill.get(5)); 
+		objBill.print();
+		
+	}
+
+	@Override
+	public String toString() {
+		return "BeverageHelper [toString()=" + super.toString() + "]";
+	}
+
+	public static void displayDetailedOrders(OrderDetails ord) {
+		System.out.println(ord.getOrdCoffeeType()+" - "+ ord.getOrdCoffeeSize()+" - "+ord.getOrdCoffeeAddon());
+	}
+
 }
 

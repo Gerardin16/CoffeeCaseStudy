@@ -93,6 +93,11 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
 	}
+	@Override
+	public ArrayList getDetailedOrders(int person, String initialOrderNum) throws ClassNotFoundException, SQLException {
+		 return billTrans.getDetailedOrders(person,initialOrderNum);
+	}
+
 
 
 

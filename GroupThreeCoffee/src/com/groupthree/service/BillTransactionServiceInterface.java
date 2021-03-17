@@ -20,5 +20,7 @@ public interface BillTransactionServiceInterface {
 	public void createCoffeeOrder(int person, String orderNum, int selectedCoffeeType, int selectedCoffeeSize,
 			int selectedAddon) throws ClassNotFoundException, SQLException;
 
+	ArrayList getDetailedOrders(int person, String initialOrderNum) throws ClassNotFoundException, SQLException;
+
 
 }

@@ -5,9 +5,14 @@ import com.groupthree.bean.CoffeeAddon;
 import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeOrder;
 import com.groupthree.util.OracleConnectionManagement;
+import com.groupthree.util.OrderDetails;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+
 
 public class BillTransactionDao implements BillTransactionDaoInterface {
 
@@ -101,5 +106,35 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		connection.close();
 	}
 
+	@Override
+	public ArrayList getDetailedOrders(int person, String initialOrderNum) throws ClassNotFoundException, SQLException {
+		Connection connection = null;
+	    ArrayList<OrderDetails> orders = new ArrayList<>();
+	    connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
+	    String queryString="select ct.COFFEE_NAME as Coffee_Name,cs.COFFEE_SIZE as Coffee_size,ca.COFFEE_ADDON_NAME as Coffee_Addon from COFFEE_ORDER co inner join COFFEE_TYPE ct"
+				+" on co.COFFEE_ID=ct.COFFEE_ID inner join COFFEE_SIZE cs on co.COFFEE_SIZE_ID=cs.COFFEE_SIZE_ID"
+				+" inner join COFFEE_ADDONS ca on co.COFFEE_ADDON_ID=ca.COFFEE_ADDON_ID where P_ID="+person+"and ORDER_NUMBER='"+initialOrderNum+"'";
+	    PreparedStatement statement = connection.prepareStatement(queryString);
+
+	    ResultSet resultSet = statement.executeQuery();
+	    while (resultSet.next()) {
+	    	
+	    OrderDetails orderDetails=new OrderDetails();
+	    orderDetails.setOrdCoffeeType(resultSet.getString("Coffee_Name"));
+	    orderDetails.setOrdCoffeeSize(resultSet.getString("Coffee_Size"));
+	    orderDetails.setOrdCoffeeAddon(resultSet.getString("Coffee_Addon"));
+	    orders.add(orderDetails);
+	    }
+	    connection.close();
+		return  orders;
+
 
 }
+}
+	
+	
+
+   
+    
+
+  
