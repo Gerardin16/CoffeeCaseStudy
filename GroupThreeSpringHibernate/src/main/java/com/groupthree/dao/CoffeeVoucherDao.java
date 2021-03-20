@@ -1,13 +1,5 @@
 package com.groupthree.dao;
-
-import com.groupthree.bean.CoffeeType
-;
 import com.groupthree.bean.CoffeeVoucher;
-
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +29,7 @@ private SessionFactory sessionFactory;
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherCode <> 'DUMMY'");
+		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where  voucherId <> 0");
 		       
 		List<CoffeeVoucher> coffeeVouchers=query.getResultList();
 		transaction.commit();

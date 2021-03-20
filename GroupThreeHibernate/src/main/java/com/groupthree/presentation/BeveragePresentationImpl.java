@@ -22,7 +22,8 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     CoffeeVoucherServiceInterface coffeeVoucher= new CoffeeVoucherService();
     CoffeeSizeServiceInterface coffeeSize=new CoffeeSizeService();
     CoffeeTypeServiceInterface coffeeType=new CoffeeTypeService();
-    private int selectedCoffeeSize;
+    
+	private int selectedCoffeeSize;
     private  int selectedVoucher;
     private int selectedAddon;
     private int selectedCoffeeType;
@@ -30,6 +31,13 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private String subChoice;
     private String coffeeTypeChoice;
     private int selectedPerson;
+    private String coffeeSizeChoice;
+    private String coffeeAddOnChoice;
+    private String voucherCode;
+    private String OrderNum;
+    private String initialOrderNum=ORDER_NUMBER;
+    private String randomNum;
+	private long personPhoneno;
     private String selectedVoucherCode;
     public String getSelectedVoucherCode() {
 		return selectedVoucherCode;
@@ -62,15 +70,9 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     public void setSelectedCoffeeType(int selectedCoffeeType) {
         this.selectedCoffeeType = selectedCoffeeType;
     }
-    
-    private String coffeeSizeChoice;
-    private String coffeeAddOnChoice;
-    private String voucherCode;
-    private String OrderNum;
-    private String initialOrderNum=ORDER_NUMBER;
-    private String randomNum;
+
     Scanner input=new Scanner(System.in);
-	private long personPhoneno;
+	
 
 	@Override
 	public void showBeveragesMenu(int selectedPerson) throws ClassNotFoundException, SQLException {

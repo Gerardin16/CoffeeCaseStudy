@@ -3,6 +3,7 @@ package com.groupthree.dao;
 
 import com.groupthree.bean.CoffeeAddon;
 
+
 import com.groupthree.bean.CoffeeBill;
 import com.groupthree.bean.CoffeeOrder;
 import com.groupthree.bean.CoffeeSize;
@@ -18,10 +19,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

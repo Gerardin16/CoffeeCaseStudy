@@ -21,14 +21,24 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     CoffeeVoucherServiceInterface coffeeVoucher= new CoffeeVoucherService();
     CoffeeSizeServiceInterface coffeeSize=new CoffeeSizeService();
     CoffeeTypeServiceInterface coffeeType=new CoffeeTypeService();
+    
     private int selectedCoffeeSize;
     private  int selectedVoucher;
     private int selectedAddon;
     private int selectedCoffeeType;
+    private int choice;
     private String subChoice;
     private String coffeeTypeChoice;
     private int selectedPerson;
+    private String coffeeSizeChoice;
+    private String coffeeAddOnChoice;
+    private String voucherCode;
+    private String OrderNum;
+    private String initialOrderNum=ORDER_NUMBER;
+    private String randomNum;
+	private long personPhoneno;
     private String selectedVoucherCode;
+    
     public String getSelectedVoucherCode() {
 		return selectedVoucherCode;
 	}
@@ -61,14 +71,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         this.selectedCoffeeType = selectedCoffeeType;
     }
     
-    private int choice;
-    private String coffeeSizeChoice;
-    private String coffeeAddOnChoice;
-    private String voucherCode;
-    private String OrderNum;
-    private String initialOrderNum=ORDER_NUMBER;
-    private String randomNum;
-	private long personPhoneno;
+
     Scanner input=new Scanner(System.in);
 
 

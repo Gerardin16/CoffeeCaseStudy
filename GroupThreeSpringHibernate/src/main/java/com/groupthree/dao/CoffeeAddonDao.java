@@ -30,7 +30,7 @@ private SessionFactory sessionFactory;
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeAddon> query = session.createQuery("from CoffeeAddon where coffeeAddonName<>'DUMMY'");
+		Query<CoffeeAddon> query = session.createQuery("from CoffeeAddon where coffeeAddonId<>0");
 		       
 		List<CoffeeAddon> coffeeAddons=query.getResultList();
 		transaction.commit();
