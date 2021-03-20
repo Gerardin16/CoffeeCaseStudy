@@ -27,17 +27,17 @@ import org.hibernate.query.Query;
 public class BillTransactionDao implements BillTransactionDaoInterface {
 
     private static final int NULL = 0;
+    StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+	
+	Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
+
+	//For entire application one SessionFactory object : SessionFactory is SingleTon
+	SessionFactory factory=meta.getSessionFactoryBuilder().build();
+	
 
 	@Override
     public void createOrder(int person,String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
             throws ClassNotFoundException, SQLException {
-        
-        StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();
@@ -58,20 +58,14 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		session.save(coffeeOrder);
 		transaction.commit();
 		session.close();
-		factory.close();
+	
 		
     }
 
 	@Override
 	public double getOrders(int person,String initialOrderNum) throws SQLException, ClassNotFoundException {
 		 double totalSum=0.0;
-		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
-		
+	
 		//For every Transaction one Session object
 		Session session=factory.openSession();
 		
@@ -93,12 +87,6 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 	@Override
 	public void createBill(int person,String initialOrderNum, int selectedVoucher, double totalBill) throws SQLException, ClassNotFoundException {
 		
-		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();
@@ -117,19 +105,12 @@ public class BillTransactionDao implements BillTransactionDaoInterface {
 		session.save(coffeeBill);
 		transaction.commit();
 		session.close();
-		factory.close();
+		
 	}
 
 	@Override
 	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
 		ArrayList<OrderDetails> orders = new ArrayList<>();
-	
-		StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-	
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();

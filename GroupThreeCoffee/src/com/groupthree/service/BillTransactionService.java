@@ -1,6 +1,7 @@
 package com.groupthree.service;
 
 import com.groupthree.bean.CoffeeBill;
+
 import java.util.UUID;
 import com.groupthree.bean.CoffeeVoucher;
 import com.groupthree.dao.BillTransactionDao;
@@ -20,7 +21,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 	CoffeeVoucherDaoInterface coffeeVoucher=new CoffeeVoucherDao();
 	private Integer totalValue;
 
-
+//	Generate bill
     @Override
     public ArrayList  generateBill(int person,String initialOrderNum, int selectedVoucher)
 			throws ClassNotFoundException, SQLException {
@@ -73,7 +74,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
 
 
-
+//Order Number Generation
 	@Override
 	public String createRandomOrderNumber() {
 	
@@ -86,13 +87,14 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
 
 
-
+// Placing order
 	@Override
 	public void createCoffeeOrder(int person, String orderNum, int selectedCoffeeType, int selectedCoffeeSize,
 			int selectedAddon) throws ClassNotFoundException, SQLException {
 		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
 	}
+//	Getting all the orders placed by a single customer
 	@Override
 	public ArrayList getDetailedOrders(int person, String initialOrderNum) throws ClassNotFoundException, SQLException {
 		 return billTrans.getDetailedOrders(person,initialOrderNum);

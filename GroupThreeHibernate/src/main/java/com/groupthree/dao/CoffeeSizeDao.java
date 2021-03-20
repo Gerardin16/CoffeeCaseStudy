@@ -22,15 +22,16 @@ import org.hibernate.query.Query;
 
 public class CoffeeSizeDao implements CoffeeSizeDaoInterface {
 
+StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+	
+	Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
+	//For entire application one SessionFactory object : SessionFactory is SingleTon
+	SessionFactory factory=meta.getSessionFactoryBuilder().build();
+	
     @Override
     public ArrayList<CoffeeSize> getCoffeeSize() throws ClassNotFoundException, SQLException {
-    	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+ 
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();

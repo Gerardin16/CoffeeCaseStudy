@@ -23,18 +23,17 @@ import com.groupthree.bean.PersonDetails;
 
 
 public class PersonDetailsDao implements PersonDetailsDaoInterface{
+	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 	
-		@Override
-		public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
-//			
-			StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-			
-			Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
+	Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
-			//For entire application one SessionFactory object : SessionFactory is SingleTon
-			SessionFactory factory=meta.getSessionFactoryBuilder().build();
-			
-			//For every Transaction one Session object
+	//For entire application one SessionFactory object : SessionFactory is SingleTon
+	SessionFactory factory=meta.getSessionFactoryBuilder().build();
+	
+
+
+		@Override
+		public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {		
 			Session session=factory.openSession();
 			
 			Transaction transaction=session.beginTransaction();
@@ -49,13 +48,7 @@ public class PersonDetailsDao implements PersonDetailsDaoInterface{
 }
 
 		public PersonDetails insertPerson(String name, long personPhoneno) throws ClassNotFoundException, SQLException {
-			StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-			
-			Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-			//For entire application one SessionFactory object : SessionFactory is SingleTon
-			SessionFactory factory=meta.getSessionFactoryBuilder().build();
-			
+		
 			//For every Transaction one Session object
 			Session session=factory.openSession();
 			
@@ -66,7 +59,6 @@ public class PersonDetailsDao implements PersonDetailsDaoInterface{
 			session.save(person);
 			transaction.commit();
 			session.close();
-			factory.close();
 			return person;
 		}
 }

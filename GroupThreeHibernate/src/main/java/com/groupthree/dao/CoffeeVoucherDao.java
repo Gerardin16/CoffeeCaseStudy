@@ -22,15 +22,16 @@ import org.hibernate.query.Query;
 
 public class CoffeeVoucherDao implements CoffeeVoucherDaoInterface{
 
+StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+	
+	Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
+	//For entire application one SessionFactory object : SessionFactory is SingleTon
+	SessionFactory factory=meta.getSessionFactoryBuilder().build();
+	
     @Override
     public ArrayList<CoffeeVoucher> getCoffeeVoucher() throws ClassNotFoundException,SQLException {
-    	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+    
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();
@@ -38,7 +39,7 @@ public class CoffeeVoucherDao implements CoffeeVoucherDaoInterface{
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherCode <>'DUMMY'");
+		Query<CoffeeVoucher> query = session.createQuery("from CoffeeVoucher where voucherId <>0");
 		       
 		List<CoffeeVoucher> coffeeVouchers=query.getResultList();
 		transaction.commit();

@@ -22,15 +22,16 @@ import org.hibernate.query.Query;
 
 public class CoffeeAddonDao implements CoffeeAddonDaoInterface{
 
+StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+	
+	Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
 
+	//For entire application one SessionFactory object : SessionFactory is SingleTon
+	SessionFactory factory=meta.getSessionFactoryBuilder().build();
+	
     @Override
     public ArrayList<CoffeeAddon> getCoffeeAddon() throws ClassNotFoundException, SQLException {
-    	StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		
-		Metadata meta=new MetadataSources(ssr).getMetadataBuilder().build();
-
-		//For entire application one SessionFactory object : SessionFactory is SingleTon
-		SessionFactory factory=meta.getSessionFactoryBuilder().build();
+   
 		
 		//For every Transaction one Session object
 		Session session=factory.openSession();
@@ -38,7 +39,7 @@ public class CoffeeAddonDao implements CoffeeAddonDaoInterface{
 		Transaction transaction=session.beginTransaction();
 		
 		
-		Query<CoffeeAddon> query = session.createQuery("from CoffeeAddon where coffeeAddonName<>'DUMMY'");
+		Query<CoffeeAddon> query = session.createQuery("from CoffeeAddon where coffeeAddonId<> 0");
 		       
 		List<CoffeeAddon> coffeeAddons=query.getResultList();
 		transaction.commit();

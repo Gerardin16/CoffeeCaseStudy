@@ -19,7 +19,7 @@ public class CoffeeAddonDao implements CoffeeAddonDaoInterface{
         ArrayList<CoffeeAddon> coffeeAddons = new ArrayList<>();
 
         connection = OracleConnectionManagement.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "wiley123");
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM COFFEE_ADDONS WHERE COFFEE_ADDON_NAME<>'DUMMY'");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM COFFEE_ADDONS WHERE COFFEE_ADDON_ID<> 0");
 
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
