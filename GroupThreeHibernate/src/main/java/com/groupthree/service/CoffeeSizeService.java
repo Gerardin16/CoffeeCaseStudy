@@ -11,7 +11,7 @@ public class CoffeeSizeService implements CoffeeSizeServiceInterface{
 
     private CoffeeSizeDaoInterface coffeeSizeDao= new CoffeeSizeDao();
     @Override
-    public ArrayList<CoffeeSize> getCoffeeSize() throws ClassNotFoundException, SQLException {
+    public ArrayList<CoffeeSize> getCoffeeSize() {
         return coffeeSizeDao.getCoffeeSize();
 
     }

@@ -12,7 +12,7 @@ public class PersonDetailsService implements PersonDetailsServiceInterface{
 	private PersonDetailsDao personDetailsDao=new PersonDetailsDao();
 
 @Override
-public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
+public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno)  {
 	ArrayList<PersonDetails> personDetails= personDetailsDao.searchRecordByPhoneno(person_phoneno);
 				
 //	if(personDetails!=null) {
@@ -25,7 +25,7 @@ public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throw
 }
 
 @Override
-public PersonDetails insertPerson(String name,long personPhoneno) throws ClassNotFoundException, SQLException {
+public PersonDetails insertPerson(String name,long personPhoneno) {
 	// TODO Auto-generated method stub
 	return  personDetailsDao.insertPerson(name, personPhoneno);
 }

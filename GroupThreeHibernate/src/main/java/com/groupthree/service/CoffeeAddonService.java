@@ -12,7 +12,7 @@ public class CoffeeAddonService implements CoffeeAddonServiceInterface {
     private CoffeeAddonDaoInterface coffeeAddonDao = new CoffeeAddonDao();
 
     @Override
-    public ArrayList<CoffeeAddon> getCoffeeAddon() throws SQLException, ClassNotFoundException {
+    public ArrayList<CoffeeAddon> getCoffeeAddon() {
         return coffeeAddonDao.getCoffeeAddon();
 
     }

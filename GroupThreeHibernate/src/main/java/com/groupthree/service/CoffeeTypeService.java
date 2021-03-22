@@ -11,7 +11,7 @@ public class CoffeeTypeService implements CoffeeTypeServiceInterface{
     private CoffeeTypeDaoInterface coffeeTypeDao=new CoffeeTypeDao();
 
     @Override
-    public ArrayList<CoffeeType> getCoffeeType() throws ClassNotFoundException, SQLException {
+    public ArrayList<CoffeeType> getCoffeeType()  {
         return coffeeTypeDao.getCoffeeType();
     }
 

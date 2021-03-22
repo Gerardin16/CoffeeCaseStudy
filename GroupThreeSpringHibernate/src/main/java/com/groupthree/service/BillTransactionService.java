@@ -1,7 +1,6 @@
 package com.groupthree.service;
 
 import com.groupthree.bean.CoffeeBill;
-
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,34 +22,15 @@ import java.util.TreeMap;
 @Service
 public class BillTransactionService implements BillTransactionServiceInterface{
 	@Autowired
-    private BillTransactionDaoInterface billTrans;
+    BillTransactionDaoInterface billTrans;
 	@Autowired
 	CoffeeVoucherDaoInterface coffeeVoucher;
-	
-	public BillTransactionDaoInterface getBillTrans() {
-		return billTrans;
-	}
-
-
-	public void setBillTrans(BillTransactionDaoInterface billTrans) {
-		this.billTrans = billTrans;
-	}
-
-
-	public CoffeeVoucherDaoInterface getCoffeeVoucher() {
-		return coffeeVoucher;
-	}
-
-	public void setCoffeeVoucher(CoffeeVoucherDaoInterface coffeeVoucher) {
-		this.coffeeVoucher = coffeeVoucher;
-	}
-
 	private Integer totalValue;
 
 
     @Override
     public ArrayList  generateBill(int person,String initialOrderNum, int selectedVoucher)
-			throws ClassNotFoundException, SQLException {
+			 {
     	double totalValue=0;
     	double discount = 0;
     	double netValue;
@@ -58,6 +38,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
     	double stTax;
     	double totalBill;
 		ArrayList displayBill=new ArrayList();
+		
 		
 		ArrayList<CoffeeVoucher> coffeeVoucherList=coffeeVoucher.getCoffeeVoucher();
     	totalValue= billTrans.getOrders(person,initialOrderNum);
@@ -116,17 +97,18 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 
 	@Override
 	public void createCoffeeOrder(int person, String orderNum, int selectedCoffeeType, int selectedCoffeeSize,
-			int selectedAddon) throws ClassNotFoundException, SQLException {
+			int selectedAddon) {
 		billTrans.createOrder(person,orderNum,selectedCoffeeType,selectedCoffeeSize,selectedAddon);
 		
 	}
-	
+
+
+
 
 	@Override
 	public List<OrderDetails> getDetailedOrders(int person, String initialOrderNum) {
 		 return billTrans.getDetailedOrders(person,initialOrderNum);
 	}
-
 
 
 

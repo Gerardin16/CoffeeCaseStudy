@@ -12,21 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CoffeeAddonService implements CoffeeAddonServiceInterface {
 	@Autowired
-    private CoffeeAddonDaoInterface coffeeAddonDao;
-	
+    private CoffeeAddonDaoInterface coffeeAddonDao ;
 
-    public CoffeeAddonDaoInterface getCoffeeAddonDao() {
-		return coffeeAddonDao;
-	}
-
-
-	public void setCoffeeAddonDao(CoffeeAddonDaoInterface coffeeAddonDao) {
-		this.coffeeAddonDao = coffeeAddonDao;
-	}
-
-
-	@Override
-    public ArrayList<CoffeeAddon> getCoffeeAddon() throws SQLException, ClassNotFoundException {
+    @Override
+    public ArrayList<CoffeeAddon> getCoffeeAddon() {
         return coffeeAddonDao.getCoffeeAddon();
 
     }

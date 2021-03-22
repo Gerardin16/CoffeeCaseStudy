@@ -11,7 +11,7 @@ public class CoffeeVoucherService implements CoffeeVoucherServiceInterface{
 
         private CoffeeVoucherDaoInterface coffeeVoucherDao= new CoffeeVoucherDao();
         @Override
-        public ArrayList<CoffeeVoucher> getCoffeeVoucher() throws ClassNotFoundException, SQLException {
+        public ArrayList<CoffeeVoucher> getCoffeeVoucher() {
             return coffeeVoucherDao.getCoffeeVoucher();
 
         }

@@ -111,10 +111,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 
         }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+      
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -142,10 +139,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
        }
     BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+        
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -180,10 +174,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             System.out.println("=========================");
         }
         }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+      
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -219,10 +210,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
            
         }
     }
-    catch(ClassNotFoundException | SQLException ex)
-    {
-        ex.printStackTrace();
-    }
+    
     catch (InputMismatchException e)
     {
         System.out.println("Please provide a correct input");
@@ -249,10 +237,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         }
         System.out.println("=========================");
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+       
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -281,10 +266,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         System.out.println("=========================");
 
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+      
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -325,10 +307,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
       		}
     	}
 		 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+      
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");

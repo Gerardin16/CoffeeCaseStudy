@@ -12,29 +12,24 @@ import com.groupthree.dao.PersonDetailsDaoInterface;
 
 @Service
 public class PersonDetailsService implements PersonDetailsServiceInterface{
-	
 	@Autowired
 	private PersonDetailsDao personDetailsDao;
-	
-
-public PersonDetailsDao getPersonDetailsDao() {
-		return personDetailsDao;
-	}
-
-	public void setPersonDetailsDao(PersonDetailsDao personDetailsDao) {
-		this.personDetailsDao = personDetailsDao;
-	}
 
 @Override
-public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {
+public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno)  {
 	ArrayList<PersonDetails> personDetails= personDetailsDao.searchRecordByPhoneno(person_phoneno);
 				
-
+//	if(personDetails!=null) {
+//	personDetails.setpId(personDetails.getpId());
+//	personDetails.setPersonName(personDetails.getPersonName());
+//	personDetails.setPersonPhoneNo(personDetails.getPersonPhoneNo());
+	
+//}
 	return personDetails;
 }
 
 @Override
-public PersonDetails insertPerson(String name,long personPhoneno) throws ClassNotFoundException, SQLException {
+public PersonDetails insertPerson(String name,long personPhoneno) {
 	// TODO Auto-generated method stub
 	return  personDetailsDao.insertPerson(name, personPhoneno);
 }

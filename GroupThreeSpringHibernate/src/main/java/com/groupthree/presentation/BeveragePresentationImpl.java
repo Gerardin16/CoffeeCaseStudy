@@ -14,16 +14,23 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Component("presentation")
 public class BeveragePresentationImpl implements BeveragePresentationInterface {
-    BillTransactionServiceInterface transactionService=new BillTransactionService();
+	@Autowired
+    BillTransactionServiceInterface transactionService;
     BeverageHelper bvhelper;
-    PersonDetailsServiceInterface personDetails = new PersonDetailsService();
-    CoffeeAddonServiceInterface coffeeAddon=new CoffeeAddonService();
-    CoffeeVoucherServiceInterface coffeeVoucher= new CoffeeVoucherService();
-    CoffeeSizeServiceInterface coffeeSize=new CoffeeSizeService();
-    CoffeeTypeServiceInterface coffeeType=new CoffeeTypeService();
+    @Autowired
+    PersonDetailsServiceInterface personDetails ;
+    @Autowired
+    CoffeeAddonServiceInterface coffeeAddon;
+    @Autowired
+    CoffeeVoucherServiceInterface coffeeVoucher;
+    @Autowired
+    CoffeeSizeServiceInterface coffeeSize;
+    @Autowired
+    CoffeeTypeServiceInterface coffeeType;
     
 	private int selectedCoffeeSize;
     private  int selectedVoucher;
@@ -113,10 +120,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 
         }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+       
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -144,10 +148,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
        }
     BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+       
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -182,10 +183,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             System.out.println("=========================");
         }
         }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+        
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -221,10 +219,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
            
         }
     }
-    catch(ClassNotFoundException | SQLException ex)
-    {
-        ex.printStackTrace();
-    }
+    
     catch (InputMismatchException e)
     {
         System.out.println("Please provide a correct input");
@@ -251,10 +246,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         }
         System.out.println("=========================");
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+        
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -283,10 +275,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
         System.out.println("=========================");
 
     	 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+       
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");
@@ -327,10 +316,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
       		}
     	}
 		 }
-        catch(ClassNotFoundException | SQLException ex)
-        {
-            ex.printStackTrace();
-        }
+       
         catch (InputMismatchException e)
         {
             System.out.println("Please provide a correct input");

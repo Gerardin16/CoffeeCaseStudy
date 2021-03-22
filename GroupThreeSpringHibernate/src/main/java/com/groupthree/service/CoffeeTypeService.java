@@ -11,26 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
 public class CoffeeTypeService implements CoffeeTypeServiceInterface{
-	
 	@Autowired
     private CoffeeTypeDaoInterface coffeeTypeDao;
-	
-	
 
-    public CoffeeTypeDaoInterface getCoffeeTypeDao() {
-		return coffeeTypeDao;
-	}
-
-
-
-	public void setCoffeeTypeDao(CoffeeTypeDaoInterface coffeeTypeDao) {
-		this.coffeeTypeDao = coffeeTypeDao;
-	}
-
-
-
-	@Override
-    public ArrayList<CoffeeType> getCoffeeType() throws ClassNotFoundException, SQLException {
+    @Override
+    public ArrayList<CoffeeType> getCoffeeType()  {
         return coffeeTypeDao.getCoffeeType();
     }
 
