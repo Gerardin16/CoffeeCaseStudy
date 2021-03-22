@@ -33,7 +33,7 @@ public class PersonDetailsDao implements PersonDetailsDaoInterface{
 
 
 		@Override
-		public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno) throws ClassNotFoundException, SQLException {		
+		public ArrayList<PersonDetails> searchRecordByPhoneno(long person_phoneno)  {		
 			Session session=factory.openSession();
 			
 			Transaction transaction=session.beginTransaction();
@@ -47,7 +47,7 @@ public class PersonDetailsDao implements PersonDetailsDaoInterface{
 			return   (ArrayList<PersonDetails>) person;
 }
 
-		public PersonDetails insertPerson(String name, long personPhoneno) throws ClassNotFoundException, SQLException {
+		public PersonDetails insertPerson(String name, long personPhoneno) {
 		
 			//For every Transaction one Session object
 			Session session=factory.openSession();

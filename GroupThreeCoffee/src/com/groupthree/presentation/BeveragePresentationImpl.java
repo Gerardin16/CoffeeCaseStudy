@@ -76,7 +76,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 
 	@Override
-	public void showBeveragesMenu(int selectedPerson) throws ClassNotFoundException, SQLException {
+	public void showBeveragesMenu(int selectedPerson) {
 		// TODO Auto-generated method stub
 		try{
             System.out.println("Please place your order");
@@ -130,7 +130,8 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 	}
 //	Customer Details check
 	@Override
-	public int showPersonDetails() throws ClassNotFoundException, SQLException {
+	public int showPersonDetails() {
+		try {
 		PersonDetails person;
 		System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
     	personPhoneno = input.nextLong();
@@ -146,11 +147,22 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     		System.out.println("Welcome "+person.getPersonName());
     		}
     		selectedPerson=person.getpId();
-    		return selectedPerson;
+    		
+		}
+	      catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
+		return selectedPerson;
 	}
 //	Get Coffee details
-    public void showCoffeeType() throws SQLException, ClassNotFoundException {
-
+    public void showCoffeeType() {
+    	try {
         System.out.println("Choose your coffee");
         ArrayList<CoffeeType> coffeeTypeList=coffeeType.getCoffeeType();
         for(CoffeeType type:coffeeTypeList){
@@ -166,12 +178,20 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
          System.out.println("=========================");
 
-
-
+    	}
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
      }
 //    Get Size details
-    public void showCoffeeSize() throws SQLException, ClassNotFoundException {
-
+    public void showCoffeeSize()  {
+    	try {
         System.out.println("Choose your size");
         ArrayList<CoffeeSize> coffeeSizeList=coffeeSize.getCoffeeSize();
         for(CoffeeSize size:coffeeSizeList){
@@ -184,10 +204,21 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             }
         }
         System.out.println("=========================");
+
+    	}
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
     }
 //  Get Add ons details
-    public void showCoffeeAddon() throws SQLException, ClassNotFoundException {
-        
+    public void showCoffeeAddon()  {
+    	try {
         System.out.println("Choose your Add On");
         ArrayList<CoffeeAddon> coffeeAddonList=coffeeAddon.getCoffeeAddon();
         for(CoffeeAddon addOn:coffeeAddonList){
@@ -211,9 +242,20 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
            
            
         }
+    	}
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
     }
 //    Get voucher details
-    public void showVoucher() throws SQLException, ClassNotFoundException {
+    public void showVoucher()  {
+    	try {
         System.out.println("Do you have any discount voucher?");
         subChoice=input.next();
         if(subChoice.equalsIgnoreCase("yes"))
@@ -225,12 +267,25 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             for(CoffeeVoucher voucher:coffeeVoucherList)
                 if (voucherCode.equalsIgnoreCase(voucher.getVoucherCode().toString())) {
                 	selectedVoucher=voucher.getVoucherId();
+                	selectedVoucherCode = voucher.getVoucherCode();
                 }
             System.out.println("=========================");
         }
+    	}
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
+    	
     }
 //    Print bill
-    public void printBill(int person,String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
+    public void printBill(int person,String initialOrderNum, int selectedVoucher) {
+    	try {
     	ArrayList<OrderDetails> orders=transactionService.getDetailedOrders(person,initialOrderNum);
         ArrayList bill =transactionService.generateBill(person,OrderNum,selectedVoucher);
     	
@@ -244,19 +299,18 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
  			 BeverageHelper.displayDetailedOrders(ord);
  	       }
          BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
+    
     }
-   
- 
-    	
+    catch(ClassNotFoundException | SQLException ex)
+    {
+        ex.printStackTrace();
+    }
 
-
-  
-
-
-
-
-
-
+    catch (NullPointerException en)
+    {
+        System.out.println(en.getMessage());
+    }
+    }
 }
 		
 

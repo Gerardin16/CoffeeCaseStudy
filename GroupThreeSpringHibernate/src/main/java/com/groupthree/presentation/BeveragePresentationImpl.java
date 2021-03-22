@@ -3,8 +3,6 @@ package com.groupthree.presentation;
 
 
 import com.groupthree.bean.*;
-
-
 import com.groupthree.service.*;
 import com.groupthree.util.BeverageHelper;
 import com.groupthree.util.OrderDetails;
@@ -14,28 +12,19 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-
 @Component("presentation")
 public class BeveragePresentationImpl implements BeveragePresentationInterface {
-	@Autowired
-    private BillTransactionServiceInterface transactionService;
-	@Autowired
-    private PersonDetailsServiceInterface personDetails;
-	@Autowired
-    private CoffeeAddonServiceInterface coffeeAddon;
-	@Autowired
-    private CoffeeVoucherServiceInterface coffeeVoucher;
-	@Autowired
-    private CoffeeSizeServiceInterface coffeeSize;
-	@Autowired
-    private CoffeeTypeServiceInterface coffeeType;
-	private BeverageHelper bvhelper;
-	   
-	   
+    BillTransactionServiceInterface transactionService=new BillTransactionService();
+    BeverageHelper bvhelper;
+    PersonDetailsServiceInterface personDetails = new PersonDetailsService();
+    CoffeeAddonServiceInterface coffeeAddon=new CoffeeAddonService();
+    CoffeeVoucherServiceInterface coffeeVoucher= new CoffeeVoucherService();
+    CoffeeSizeServiceInterface coffeeSize=new CoffeeSizeService();
+    CoffeeTypeServiceInterface coffeeType=new CoffeeTypeService();
+    
 	private int selectedCoffeeSize;
     private  int selectedVoucher;
     private int selectedAddon;
@@ -52,7 +41,6 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     private String randomNum;
 	private long personPhoneno;
     private String selectedVoucherCode;
-    
     public String getSelectedVoucherCode() {
 		return selectedVoucherCode;
 	}
@@ -61,65 +49,7 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 		this.selectedVoucherCode = selectedVoucherCode;
 	}
 
-    
-    public BillTransactionServiceInterface getTransactionService() {
-		return transactionService;
-	}
-
-	public void setTransactionService(BillTransactionServiceInterface transactionService) {
-		this.transactionService = transactionService;
-	}
-
-	public PersonDetailsServiceInterface getPersonDetails() {
-		return personDetails;
-	}
-
-	public void setPersonDetails(PersonDetailsServiceInterface personDetails) {
-		this.personDetails = personDetails;
-	}
-
-	public CoffeeAddonServiceInterface getCoffeeAddon() {
-		return coffeeAddon;
-	}
-
-	public void setCoffeeAddon(CoffeeAddonServiceInterface coffeeAddon) {
-		this.coffeeAddon = coffeeAddon;
-	}
-
-	public CoffeeVoucherServiceInterface getCoffeeVoucher() {
-		return coffeeVoucher;
-	}
-
-	public void setCoffeeVoucher(CoffeeVoucherServiceInterface coffeeVoucher) {
-		this.coffeeVoucher = coffeeVoucher;
-	}
-
-	public CoffeeSizeServiceInterface getCoffeeSize() {
-		return coffeeSize;
-	}
-
-	public void setCoffeeSize(CoffeeSizeServiceInterface coffeeSize) {
-		this.coffeeSize = coffeeSize;
-	}
-
-	public CoffeeTypeServiceInterface getCoffeeType() {
-		return coffeeType;
-	}
-
-	public void setCoffeeType(CoffeeTypeServiceInterface coffeeType) {
-		this.coffeeType = coffeeType;
-	}
-
-	public BeverageHelper getBvhelper() {
-		return bvhelper;
-	}
-
-	public void setBvhelper(BeverageHelper bvhelper) {
-		this.bvhelper = bvhelper;
-	}
-
-
-    public int getSelectedPerson() {
+	public int getSelectedPerson() {
 		return selectedPerson;
 	}
 
@@ -142,13 +72,12 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
     public void setSelectedCoffeeType(int selectedCoffeeType) {
         this.selectedCoffeeType = selectedCoffeeType;
     }
-    
-  
-    Scanner input=new Scanner(System.in);
 
+    Scanner input=new Scanner(System.in);
+	
 
 	@Override
-	public void showBeveragesMenu(int selectedPerson) throws ClassNotFoundException, SQLException {
+	public void showBeveragesMenu(int selectedPerson) {
 		// TODO Auto-generated method stub
 		try{
             System.out.println("Please place your order");
@@ -200,31 +129,43 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 	}
 
 
-    public void printBill(int person,String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException {
+    public void printBill(int person,String initialOrderNum, int selectedVoucher) {
+    	try{
     	List<OrderDetails> orders=transactionService.getDetailedOrders(person,initialOrderNum);
-        ArrayList bill =transactionService.generateBill(person,OrderNum,selectedVoucher);
-        System.out.println("---------------Final Invoice-------------------");
- 		System.out.println("Your order number is :"+initialOrderNum);
- 		System.out.println("You have ordered the below items");
- 	System.out.println("Coffee--Size--Addon")	;
- 	for(OrderDetails ord:orders){
- 		if (ord.getOrdCoffeeAddon().equalsIgnoreCase("DUMMY"))
- 			ord.setOrdCoffeeAddon("No Addon");
- 		 BeverageHelper.displayDetailedOrders(ord);
+       ArrayList bill =transactionService.generateBill(person,OrderNum,selectedVoucher);
+       System.out.println("---------------Final Invoice-------------------");
+		System.out.println("Your order number is :"+initialOrderNum);
+		System.out.println("You have ordered the below items");
+	System.out.println("Coffee--Size--Addon")	;
+	for(OrderDetails ord:orders){
+		if (ord.getOrdCoffeeAddon().equalsIgnoreCase("DUMMY"))
+			ord.setOrdCoffeeAddon("No Addon");
+		 BeverageHelper.displayDetailedOrders(ord);
+       }
+    BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
+    	 }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
         }
-     BeverageHelper.displayCoffeeBill(bill,selectedVoucherCode );
- 		
-     }
-
-    
+        catch (InputMismatchException e)
+        {
+            System.out.println("Please provide a correct input");
+        }
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
+    }
    
  
     	
 
 
-    public void showVoucher() throws SQLException, ClassNotFoundException {
+    public void showVoucher()  {
         System.out.println("Do you have any discount voucher?");
         subChoice=input.next();
+        try {
         if(subChoice.equalsIgnoreCase("yes"))
         {
             
@@ -235,14 +176,28 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
                 if (voucherCode.equalsIgnoreCase(voucher.getVoucherCode().toString())) {
 //                    transactionService.createCoffeeOrder();
                 	selectedVoucher=voucher.getVoucherId();
+                	selectedVoucherCode = voucher.getVoucherCode();
 //                	System.out.println("Order placed");
                 }
             System.out.println("=========================");
         }
+        }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println("Please provide a correct input");
+        }
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
     }
 
-    public void showCoffeeAddon() throws SQLException, ClassNotFoundException {
-    
+    public void showCoffeeAddon()  {
+    try {
         System.out.println("Choose your Add On");
         ArrayList<CoffeeAddon> coffeeAddonList=coffeeAddon.getCoffeeAddon();
         for(CoffeeAddon addOn:coffeeAddonList){
@@ -266,9 +221,23 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
            
         }
     }
+    catch(ClassNotFoundException | SQLException ex)
+    {
+        ex.printStackTrace();
+    }
+    catch (InputMismatchException e)
+    {
+        System.out.println("Please provide a correct input");
+    }
+    catch (NullPointerException en)
+    {
+        System.out.println(en.getMessage());
+    }
+    }
 
-    public void showCoffeeSize() throws SQLException, ClassNotFoundException {
-
+    public void showCoffeeSize() {
+    	try {
+    		
         System.out.println("Choose your size");
         ArrayList<CoffeeSize> coffeeSizeList=coffeeSize.getCoffeeSize();
         for(CoffeeSize size:coffeeSizeList){
@@ -281,10 +250,23 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
             }
         }
         System.out.println("=========================");
+    	 }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println("Please provide a correct input");
+        }
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
     }
 
-    public void showCoffeeType() throws SQLException, ClassNotFoundException {
-
+    public void showCoffeeType()  {
+    	try {
        System.out.println("Choose your coffee");
        ArrayList<CoffeeType> coffeeTypeList=coffeeType.getCoffeeType();
        for(CoffeeType type:coffeeTypeList){
@@ -300,12 +282,25 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
         System.out.println("=========================");
 
-
+    	 }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println("Please provide a correct input");
+        }
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
 
     }
 
 	@Override
-	public int showPersonDetails() throws ClassNotFoundException, SQLException {
+	public int showPersonDetails() {
+		try {
 		ArrayList<PersonDetails> person;
 		System.out.println("Welcome to Group Three Coffee, Please enter your registered phone number");
     	personPhoneno = input.nextLong();
@@ -331,6 +326,19 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
        
       		}
     	}
+		 }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println("Please provide a correct input");
+        }
+        catch (NullPointerException en)
+        {
+            System.out.println(en.getMessage());
+        }
     		
     		return selectedPerson;
 	}
@@ -338,4 +346,3 @@ public class BeveragePresentationImpl implements BeveragePresentationInterface {
 
 }
 		
-

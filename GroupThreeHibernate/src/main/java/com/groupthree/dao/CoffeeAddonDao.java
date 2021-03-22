@@ -30,7 +30,7 @@ StandardServiceRegistry ssr=new StandardServiceRegistryBuilder().configure("hibe
 	SessionFactory factory=meta.getSessionFactoryBuilder().build();
 	
     @Override
-    public ArrayList<CoffeeAddon> getCoffeeAddon() throws ClassNotFoundException, SQLException {
+    public ArrayList<CoffeeAddon> getCoffeeAddon() {
    
 		
 		//For every Transaction one Session object

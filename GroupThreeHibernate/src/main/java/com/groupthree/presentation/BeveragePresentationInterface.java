@@ -5,12 +5,12 @@ public interface BeveragePresentationInterface {
 	
 	  String ORDER_NUMBER="ORDR";
 	  
-    public int showPersonDetails() throws ClassNotFoundException, SQLException;
-    public void showCoffeeType() throws SQLException, ClassNotFoundException;
-    public void showCoffeeSize() throws SQLException, ClassNotFoundException;
-    public void showCoffeeAddon() throws SQLException, ClassNotFoundException;
-    public void showVoucher() throws SQLException, ClassNotFoundException;
-    public void printBill(int Person,String initialOrderNum, int selectedVoucher) throws SQLException, ClassNotFoundException;
-	public void showBeveragesMenu(int selectedPerson)throws ClassNotFoundException, SQLException;
+    public int showPersonDetails() ;
+    public void showCoffeeType() ;
+    public void showCoffeeSize();
+    public void showCoffeeAddon() ;
+    public void showVoucher() ;
+    public void printBill(int Person,String initialOrderNum, int selectedVoucher);
+	public void showBeveragesMenu(int selectedPerson);
 	
 }

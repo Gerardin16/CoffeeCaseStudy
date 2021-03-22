@@ -48,7 +48,7 @@ public class BillTransactionService implements BillTransactionServiceInterface{
 					discount=0.3*totalValue;
 				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
 					discount=0.2*totalValue;
-				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH20"))
+				if(voucher.getVoucherCode().toString().equalsIgnoreCase("BZH10"))
 					discount=0.1*totalValue;
 			}
 			}

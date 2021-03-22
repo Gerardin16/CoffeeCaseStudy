@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class BillTransactionDao implements BillTransactionDaoInterface {
 
-    private static final int NULL = 0;
+	 private static final int NULL = 0;
 
 	@Override
     public void createOrder(int person,String orderNum, int selectedCoffeeType, int selectedCoffeeSize, int selectedAddon)
